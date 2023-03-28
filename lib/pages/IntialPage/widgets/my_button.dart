@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 import '../../../utils/constants.dart';
+import '../../HomePage/home_page.dart';
+import '../../ProfilePage/profile_page.dart';
 
 class MyButton extends StatelessWidget {
   final bool isSudentbtn;
@@ -21,7 +21,7 @@ class MyButton extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(.5),
-            offset: Offset(1, 4),
+            offset: const Offset(1, 4),
             // blurStyle: BlurStyle.inner,
             // spreadRadius: 4,
             blurRadius: 4,
@@ -38,7 +38,16 @@ class MyButton extends StatelessWidget {
                 ? Constants.DARK_BLUE_COLOR
                 : Constants.LIGHT_BLUE_COLOR,
             borderRadius: BorderRadius.circular(50),
-            onTap: () {},
+            onTap: () {
+              isSudentbtn
+                  ? Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (ctx) => HomePage(),
+                      ),
+                    )
+                  : Navigator.of(context).push(
+                      MaterialPageRoute(builder: (ctx) => const ProfilePage()));
+            },
             child: Container(
               alignment: Alignment.center,
               width: constrains.maxWidth * .4,

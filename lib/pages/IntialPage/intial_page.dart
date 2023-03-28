@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:testmentor/utils/constants.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../utils/constants.dart';
+import 'widgets/logo.dart';
 import 'widgets/my_button.dart';
 
 class InitialPage extends StatelessWidget {
@@ -22,20 +20,15 @@ class InitialPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Flexible(
-                  child: Container(),
                   flex: 1,
+                  child: Container(),
                 ),
-                SizedBox(
-                  width: constrains.maxWidth * .35,
-                  height: constrains.maxWidth * .35,
-                  child: Image.asset(
-                    Constants.LIGHT_BACKGROUN_LOGO,
-                    fit: BoxFit.fill,
-                  ),
+                Logo(
+                  constrains: constrains,
                 ),
                 Flexible(
-                  child: Container(),
                   flex: 1,
+                  child: Container(),
                 ),
                 Container(
                   height: constrains.maxHeight * .5,
@@ -75,8 +68,8 @@ class InitialPage extends StatelessWidget {
                         ),
                       ),
                       Flexible(
-                        child: Container(),
                         flex: 2,
+                        child: Container(),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -92,8 +85,8 @@ class InitialPage extends StatelessWidget {
                         ],
                       ),
                       Flexible(
-                        child: Container(),
                         flex: 1,
+                        child: Container(),
                       ),
                     ],
                   ),
