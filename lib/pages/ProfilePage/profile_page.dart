@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../utils/constants.dart';
+import '../../utils/widgets/custom_appbar.dart';
 import 'widgets/edit_button.dart';
 import 'widgets/mcqs_section.dart';
 
@@ -10,7 +11,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Constants.CUSTOM_APPBAR(
+      appBar: CustomAppBar.CUSTOM_APPBAR(
           context: context, title: "Profile", buttonText: "Edit"),
       body: LayoutBuilder(builder: (context, constrains) {
         return Container(

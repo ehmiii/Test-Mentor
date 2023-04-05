@@ -1,0 +1,10 @@
+{
+    "categoryName": "Java",
+    "subCategories": [
+        {
+            "name": "xyz",
+            "image": "xyz"
+        }
+    ],
+    "categoryImage": "image.jpg"
+}

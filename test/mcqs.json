@@ -1,0 +1,16 @@
+{
+    "uploaderName": "Ahmad Khan",
+    "uploadedQuestions": [
+        {
+            "question": "Who is the founder of pakistan",
+            "answers": [
+                {
+                    "wrongAnswer1": "Maryam Nawaz",
+                    "wrongAnswer2": "Maryam Nawaz",
+                    "wrongAnswer3": "Maryam Nawaz",
+                    "rightAnswer": "Maryam Nawaz"
+                }
+            ]
+        }
+    ]
+}

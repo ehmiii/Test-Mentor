@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:testmentor/pages/AuthenticationPages/SignInPage/sign_in_page.dart';
+import 'package:testmentor/utils/Routes/routes.dart';
 
 import '../../../utils/constants.dart';
 import '../../HomePage/home_page.dart';
@@ -7,10 +10,12 @@ import '../../ProfilePage/profile_page.dart';
 class MyButton extends StatelessWidget {
   final bool isSudentbtn;
   final BoxConstraints constrains;
+  // final VoidCallback press;
   const MyButton({
     super.key,
     required this.isSudentbtn,
     required this.constrains,
+    // required this.press,
   });
 
   @override
@@ -40,13 +45,8 @@ class MyButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(50),
             onTap: () {
               isSudentbtn
-                  ? Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (ctx) => HomePage(),
-                      ),
-                    )
-                  : Navigator.of(context).push(
-                      MaterialPageRoute(builder: (ctx) => const ProfilePage()));
+                  ? Get.toNamed(Routes.getHomePage())
+                  : Get.offAllNamed(Routes.getSignInPage());
             },
             child: Container(
               alignment: Alignment.center,

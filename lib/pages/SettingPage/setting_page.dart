@@ -4,13 +4,15 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:testmentor/pages/SettingPage/widgets/custom_settings_button.dart';
 import 'package:testmentor/utils/constants.dart';
 
+import '../../utils/widgets/custom_appbar.dart';
+
 class SettingPage extends StatelessWidget {
   const SettingPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Constants.CUSTOM_APPBAR(
+      appBar: CustomAppBar.CUSTOM_APPBAR(
         context: context,
         title: "Settings",
       ),

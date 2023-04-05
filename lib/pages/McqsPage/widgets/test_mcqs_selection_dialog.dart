@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:testmentor/controllers/home_controller.dart';
+import 'package:testmentor/utils/Routes/routes.dart';
 
 import '../../../utils/constants.dart';
 
@@ -66,7 +69,11 @@ class TestMcqsSelectionDialog {
                     ),
                   ),
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      Get.find<HomeController>().setSelectedLengthofQuiz = 15;
+                      Get.back();
+                      Get.toNamed(Routes.getTestPage());
+                    },
                     style: textButtonStyle,
                     child: const Text(
                       "15 MCQs Test",
@@ -104,7 +111,7 @@ class TestMcqsSelectionDialog {
                     onPressed: () {},
                     style: textButtonStyle,
                     child: const Text(
-                      "30 MCQs Test",
+                      "20 MCQs Test",
                       style: TextStyle(
                         fontSize: 20,
                       ),
@@ -139,7 +146,7 @@ class TestMcqsSelectionDialog {
                     onPressed: () {},
                     style: textButtonStyle,
                     child: const Text(
-                      "50 MCQs Test",
+                      "30 MCQs Test",
                       style: TextStyle(
                         fontSize: 20,
                       ),

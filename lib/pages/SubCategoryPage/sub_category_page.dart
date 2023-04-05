@@ -111,7 +111,7 @@ class SubCategoryPage extends StatelessWidget {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (ctx) => McqsSelectionPage(),
+                            builder: (ctx) => McqsLengthSelectionPage(),
                           ),
                         );
                       },

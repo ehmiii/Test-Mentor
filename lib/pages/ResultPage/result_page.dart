@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../utils/constants.dart';
+import '../../utils/widgets/custom_appbar.dart';
 import 'widgets/custom_button.dart';
 import 'widgets/result_average_banner.dart';
 import 'widgets/result_chart.dart';
@@ -12,7 +13,7 @@ class ResultPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Constants.CUSTOM_APPBAR(
+      appBar: CustomAppBar.CUSTOM_APPBAR(
           context: context, title: "Result", buttonText: "Close"),
       body: LayoutBuilder(
         builder: (context, constrains) {
