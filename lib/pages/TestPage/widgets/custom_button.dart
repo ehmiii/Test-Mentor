@@ -6,11 +6,13 @@ class CustomButton extends StatelessWidget {
   final String icon;
   final String buttonText;
   final BoxConstraints constrains;
+  final VoidCallback press;
   const CustomButton({
     super.key,
     required this.icon,
     required this.buttonText,
     required this.constrains,
+    required this.press,
   });
 
   @override
@@ -44,7 +46,7 @@ class CustomButton extends StatelessWidget {
           bottomLeft: Radius.circular(25),
         ),
         child: InkWell(
-          onTap: () {},
+          onTap: press,
           splashColor: Constants.DARK_BLUE_COLOR,
           borderRadius: const BorderRadius.only(
             topRight: Radius.circular(25),

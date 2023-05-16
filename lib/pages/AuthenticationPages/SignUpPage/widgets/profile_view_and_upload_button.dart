@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../../controllers/signup_controller.dart';
 import '../../../../utils/constants.dart';
+import '../../../../utils/widgets/bottom_sheet_camera_and_gallery.dart';
 
 class ProfileViewAndUploadButton extends StatelessWidget {
   const ProfileViewAndUploadButton({super.key});
@@ -56,6 +57,19 @@ class ProfileViewAndUploadButton extends StatelessWidget {
                     splashColor: Constants.DARK_BLUE_COLOR,
                     onTap: () {
                       Get.bottomSheet(
+                        // BottomSheetCameraAndGallery(
+                        //  cameraFuction:  () {
+                        //           Get.find<SignUpController>().getImage(
+                        //             ImageSource.camera,
+                        //           );
+                        //           Get.back();
+                        //         },
+                        //         galleryFuction: () {
+                        //           Get.find<SignUpController>().getImage(
+                        //             ImageSource.gallery,
+                        //           );
+                        //         },
+                        // ),
                         Padding(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 30,
@@ -66,7 +80,7 @@ class ProfileViewAndUploadButton extends StatelessWidget {
                             children: [
                               ElevatedButton(
                                 onPressed: () {
-                                  Get.find<SignUpController>().uploadImage(
+                                  Get.find<SignUpController>().getImage(
                                     ImageSource.camera,
                                   );
                                   Get.back();
@@ -77,7 +91,7 @@ class ProfileViewAndUploadButton extends StatelessWidget {
                               ),
                               ElevatedButton(
                                 onPressed: () {
-                                  Get.find<SignUpController>().uploadImage(
+                                  Get.find<SignUpController>().getImage(
                                     ImageSource.gallery,
                                   );
                                 },

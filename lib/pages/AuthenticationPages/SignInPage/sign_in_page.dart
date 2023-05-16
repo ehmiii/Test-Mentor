@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
-import 'package:testmentor/controllers/signin_controller.dart';
-import 'package:testmentor/utils/constants.dart';
-import 'package:testmentor/utils/widgets/error_dialog.dart';
+import '/controllers/signin_controller.dart';
+import '/utils/constants.dart';
+import '/utils/widgets/error_dialog.dart';
 
 import '../../../utils/Routes/routes.dart';
-import '../../HomePage/home_page.dart';
+import '../../SubjectsPage/subjects_page.dart';
 import '../SignUpPage/sign_up_page.dart';
 import '../widgets/header_buttons_signin_and_signup.dart';
 import 'widgets/input_text.dart';

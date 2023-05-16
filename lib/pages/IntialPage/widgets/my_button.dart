@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:testmentor/pages/AuthenticationPages/SignInPage/sign_in_page.dart';
-import 'package:testmentor/utils/Routes/routes.dart';
+import '/pages/AuthenticationPages/SignInPage/sign_in_page.dart';
+import '/utils/Routes/routes.dart';
 
 import '../../../utils/constants.dart';
-import '../../HomePage/home_page.dart';
+import '../../SubjectsPage/subjects_page.dart';
 import '../../ProfilePage/profile_page.dart';
 
 class MyButton extends StatelessWidget {

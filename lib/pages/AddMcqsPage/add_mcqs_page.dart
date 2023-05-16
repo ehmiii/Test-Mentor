@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:get/get.dart';
-import 'package:testmentor/controllers/add_mcqs_controller.dart';
-import 'package:testmentor/controllers/home_controller.dart';
-import 'package:testmentor/utils/constants.dart';
-import 'package:testmentor/utils/widgets/show_toast.dart';
+import '/controllers/add_mcqs_controller.dart';
+import '/controllers/home_controller.dart';
+import '/utils/constants.dart';
+import '/utils/widgets/show_toast.dart';
 
 class AddMcqsPage extends StatefulWidget {
   const AddMcqsPage({super.key});

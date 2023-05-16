@@ -42,7 +42,11 @@ class AddMcqsController extends GetxController {
     if (_textFormGlobalKey.currentState!.validate()) {
       String url =
           "https://testmentor-41a06-default-rtdb.firebaseio.com/pending/${_userInformationModel.userId}.json?";
+
       try {
+        if (Get.arguments != null && Get.arguments[1]) {
+          Get.find<HomeController>().deleteNotification(Get.arguments[0]);
+        }
         setIsLoading = true;
         _addmcqs = McqsModel(
           uploaderName: _userInformationModel.userName,
@@ -77,9 +81,21 @@ class AddMcqsController extends GetxController {
     }
   }
 
+  Future<void> editMcqs() async {
+    McqsModel mcqs = Get.arguments[0];
+    _questionController.text = mcqs.question;
+    _wrongAnswer1Controller.text = mcqs.wrongAnswer1;
+    _wrongAnswer2Controller.text = mcqs.wrongAnswer2;
+    _wrongAnswer3Controller.text = mcqs.wrongAnswer3;
+    _rightAnswerController.text = mcqs.rightAnswer;
+  }
+
   @override
   void onInit() {
     super.onInit();
+    if (Get.arguments != null && Get.arguments[1]) {
+      editMcqs();
+    }
     _addMcqsControllers = [
       _wrongAnswer1Controller,
       _wrongAnswer2Controller,

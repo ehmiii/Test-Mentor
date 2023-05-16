@@ -1,4 +1,4 @@
-package com.testmentor.by_ak
+package com.ak.gat_cs_trainer_app
 
 import io.flutter.embedding.android.FlutterActivity
 

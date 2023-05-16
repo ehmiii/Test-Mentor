@@ -7,12 +7,25 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
-import 'package:testmentor/utils/widgets/show_toast.dart';
+import '/utils/widgets/show_toast.dart';
 
+import '../models/mcqs_model.dart';
 import '../models/user_information_model.dart';
 
 class SignUpController extends GetxController {
-  final _selectedCategory = 'Select Category'.obs;
+  McqsModel _mcqsModel = McqsModel(
+      uploaderName: "",
+      category: "",
+      question: "",
+      wrongAnswer1: "",
+      wrongAnswer2: "",
+      wrongAnswer3: "",
+      rightAnswer: "",
+      userId: "");
+  List<McqsModel> _mcqs = [];
+  List<McqsModel> get getMcqs => _mcqs;
+
+  final _selectedCategory = 'Choose a Subject'.obs;
   final _pickedImage = "".obs;
   final _errorMessage = "".obs;
 
@@ -65,7 +78,7 @@ class SignUpController extends GetxController {
   }
 
   // Getting Image from user
-  void uploadImage(ImageSource imageSource) async {
+  void getImage(ImageSource imageSource) async {
     try {
       final pickImage = await ImagePicker().pickImage(source: imageSource);
       _pickedImage.value = pickImage?.path ?? "";
@@ -156,6 +169,36 @@ class SignUpController extends GetxController {
         .child('ProfileImage of ${_userNameController.text}');
     await ref.putFile(File(_pickedImage.value));
     return await ref.getDownloadURL();
+  }
+
+  Future<void> getMcqsFromDataBase(String category) async {
+    String url =
+        "https://testmentor-41a06-default-rtdb.firebaseio.com/approve/$category.json?";
+    _mcqs = [];
+    try {
+      setIsLoading = true;
+      final response = await http.get(Uri.parse(url));
+      if (json.decode(response.body) == null) {
+        throw Exception();
+      }
+      final jsonResponse = json.decode(response.body) as Map<String, dynamic>;
+      jsonResponse.forEach(
+        (key, value) {
+          value.forEach((key, mcqs) {
+            _mcqsModel = McqsModel.fromJson(mcqs);
+            _mcqsModel.id = key;
+            _mcqs.add(_mcqsModel);
+          });
+        },
+      );
+      print(_mcqs.length);
+      update();
+    } catch (error) {
+      rethrow;
+    } finally {
+      setIsLoading = false;
+      update();
+    }
   }
 
   @override

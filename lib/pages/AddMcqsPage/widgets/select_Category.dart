@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:testmentor/utils/constants.dart';
+import '/utils/constants.dart';
 
 class Select_Category extends StatelessWidget {
   const Select_Category({super.key});

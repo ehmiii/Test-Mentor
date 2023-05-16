@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
+import '/utils/widgets/show_toast.dart';
 
 import '../../../../controllers/signup_controller.dart';
+import '../../../../utils/Routes/routes.dart';
 import '../../../../utils/constants.dart';
 
 class GiveQuizButton extends StatelessWidget {
@@ -39,9 +41,23 @@ class GiveQuizButton extends StatelessWidget {
           ),
         ),
         child: InkWell(
-          onTap: () {
-            Get.find<SignUpController>().setIsQuizPassed =
-                !Get.find<SignUpController>().getIsQuizPassed;
+          onTap: () async {
+            // Get.find<SignUpController>().setIsQuizPassed =
+            //     Get.find<SignUpController>().getIsQuizPassed;
+            if (Get.find<SignUpController>().getSeletedCategory !=
+                "Choose a Subject") {
+              try {
+                await Get.find<SignUpController>().getMcqsFromDataBase(
+                    Get.find<SignUpController>().getSeletedCategory);
+                Get.toNamed(Routes.getTestPage());
+              } catch (errorMessage) {
+                ShowToast.SHOW_TOAST(
+                    "Apologies, the selected subject is currently unavailable. We will add it soon.");
+              }
+            } else {
+              ShowToast.SHOW_TOAST(
+                  "Please select a subject first. We apologize for any inconvenience caused.");
+            }
           },
           borderRadius: const BorderRadius.only(
             bottomLeft: Radius.circular(

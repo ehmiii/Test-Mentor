@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:testmentor/controllers/home_controller.dart';
-import 'package:testmentor/utils/widgets/show_toast.dart';
+import '../../../controllers/test_controller.dart';
+import '../../McqsPage/widgets/test_mcqs_selection_dialog.dart';
+import '/controllers/home_controller.dart';
+import '/utils/widgets/show_toast.dart';
 
 import '../../../models/category_model.dart';
 import '../../../utils/Routes/routes.dart';
@@ -10,12 +12,20 @@ import '../../../utils/data/categories_names.dart';
 
 class HomeBody extends StatelessWidget {
   final BoxConstraints constrains;
-  const HomeBody({super.key, required this.constrains});
+  final List<CategoryModel> categories;
+  final String subject;
+  final String? isTest;
+  const HomeBody({
+    super.key,
+    required this.constrains,
+    required this.categories,
+    required this.subject,
+    this.isTest,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomeController>(builder: (homeController) {
-      List<CategoryModel> categories = homeController.getAvailabelCategory;
       return GridView.builder(
         physics: const NeverScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -53,9 +63,34 @@ class HomeBody extends StatelessWidget {
                 try {
                   homeController.setSelectedCategory =
                       categories[index].categoryName;
-                  await homeController
-                      .getMcqsFromDataBase(categories[index].categoryName);
-                  Get.toNamed(Routes.getMcqsLengthSelectionPage());
+                  // Get.toNamed(Routes.getMcqsLengthSelectionPage());
+                  if (isTest != 'test') {
+                    Get.toNamed(Routes.getMcqsPage());
+                    if (subject == "Computer Science") {
+                      await homeController.getMcqsFromDataBase(
+                          "Computer Science", categories[index].categoryName);
+                    } else {
+                      await homeController.getMcqsFromDataBase(
+                          "English", categories[index].categoryName);
+                    }
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) =>
+                          TestMcqsSelectionDialog.TEST_MCQS_SELECTION_DIALOG(
+                              context),
+                      barrierDismissible: false,
+                      barrierLabel: "Select Length of Mcqs",
+                      barrierColor: Constants.DARK_BLUE_COLOR.withOpacity(.7),
+                    );
+                    if (subject == "Computer Science") {
+                      await homeController.getMcqsFromDataBase(
+                          "Computer Science", categories[index].categoryName);
+                    } else {
+                      await homeController.getMcqsFromDataBase(
+                          "English", categories[index].categoryName);
+                    }
+                  }
                 } catch (error) {
                   ShowToast.SHOW_TOAST(error.toString());
                 }

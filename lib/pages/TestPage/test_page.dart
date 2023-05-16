@@ -1,35 +1,17 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_countdown_timer/countdown_timer_controller.dart';
-import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:get/get.dart';
-import 'package:testmentor/controllers/test_controller.dart';
-import 'package:testmentor/utils/Routes/routes.dart';
+import '/controllers/test_controller.dart';
+import '/pages/TestPage/widgets/time_down_counter.dart';
+import '/utils/Routes/routes.dart';
 
-import 'package:testmentor/utils/constants.dart';
+import '/utils/constants.dart';
 
 import '../../utils/widgets/custom_appbar.dart';
 import 'widgets/custom_button.dart';
 
-class TestPage extends StatefulWidget {
+class TestPage extends StatelessWidget {
   const TestPage({super.key});
-
-  @override
-  State<TestPage> createState() => _TestPageState();
-}
-
-class _TestPageState extends State<TestPage> {
-  CountdownTimerController? _controller;
-  @override
-  void initState() {
-    super.initState();
-    _controller = CountdownTimerController(
-      endTime:
-          Duration(seconds: Get.find<TestController>().getTotalTime).inMinutes,
-      onEnd: () => Get.offAndToNamed(
-        Routes.getResultPage(),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,11 +23,20 @@ class _TestPageState extends State<TestPage> {
             leadingButtonText: testController.getIsTestStart ? "Stop" : "Start",
             leadingButtonPressFunction: () {
               if (testController.getIsTestStart) {
-                Get.offAndToNamed(Routes.getResultPage());
-              } else {}
+                testController.setSkippedMcqs =
+                    testController.getSelectedMcqs.length -
+                        (testController.getObtainedMarks +
+                            testController.getWrongAnswerByUser);
+                testController.setIsTestStart = false;
+                testController.getTimer!.cancel();
+                Get.toNamed(Routes.getResultPage());
+              } else {
+                testController.setIsTestStart = true;
+                testController.update();
+                testController.testTimer();
+              }
             },
-            buttonText:
-                "${Duration(seconds: testController.getTotalTime).inMinutes}:00 min",
+            buttonText: Constants.FORMATE_TIME(testController.getTotalTime),
             buttonPressFunction: () {},
             title: "Quiz",
           ),
@@ -68,93 +59,159 @@ class _TestPageState extends State<TestPage> {
                     flex: 1,
                     child: Container(),
                   ),
-                  Container(
-                    padding: EdgeInsets.all(
-                      constrains.maxWidth * .02,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Constants.DARK_BLUE_COLOR.withOpacity(.7),
-                    ),
-                    child: Column(
+                  SizedBox(
+                    height: constrains.maxHeight * .57,
+                    child: Stack(
                       children: [
-                        Text(
-                          testController
-                              .getSelectedMcqs[
-                                  testController.getCurrentMcqsIndex]
-                              .question,
-                          style: TextStyle(
-                            color: Constants.DARK_BLACK_COLOR,
-                            fontSize: 20,
+                        Container(
+                          padding: EdgeInsets.all(
+                            constrains.maxWidth * .02,
                           ),
-                        ),
-                        SizedBox(
-                          height: constrains.maxHeight * .02,
-                        ),
-                        ListView.builder(
-                          shrinkWrap: true,
-                          itemBuilder: (_, index) => SizedBox(
-                            height: constrains.maxHeight * .11,
-                            child: Stack(
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.symmetric(
-                                    vertical: constrains.maxHeight * .013,
-                                  ),
+                          height: constrains.maxHeight * .57,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Constants.DARK_BLUE_COLOR.withOpacity(.7),
+                          ),
+                          child: Column(
+                            children: [
+                              AutoSizeText(
+                                testController
+                                    .getSelectedMcqs[
+                                        testController.getCurrentMcqsIndex]
+                                    .question,
+                                maxLines: 3,
+                                style: TextStyle(
+                                  color: Constants.DARK_BLACK_COLOR,
+                                  fontSize: 20,
+                                ),
+                              ),
+                              SizedBox(
+                                height: constrains.maxHeight * .02,
+                              ),
+                              ListView.builder(
+                                shrinkWrap: true,
+                                itemBuilder: (_, index) => SizedBox(
                                   height: constrains.maxHeight * .11,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Constants.BLUE_COLOR,
-                                        Constants.LIGHT_BLUE_COLOR,
-                                      ],
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Constants.DARK_BLACK_COLOR
-                                            .withOpacity(.5),
-                                        offset: const Offset(
-                                          3,
-                                          3,
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.symmetric(
+                                          vertical: constrains.maxHeight * .013,
                                         ),
-                                        blurRadius: 4,
+                                        height: constrains.maxHeight * .11,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                            colors: [
+                                              Constants.BLUE_COLOR,
+                                              Constants.LIGHT_BLUE_COLOR,
+                                            ],
+                                          ),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Constants.DARK_BLACK_COLOR
+                                                  .withOpacity(.5),
+                                              offset: const Offset(
+                                                3,
+                                                3,
+                                              ),
+                                              blurRadius: 4,
+                                            ),
+                                          ],
+                                          borderRadius: BorderRadius.circular(
+                                            15,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          testController
+                                              .getCurrentMcqsAnswers[index],
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            color: Constants.DARK_BLACK_COLOR,
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.symmetric(
+                                          vertical: constrains.maxHeight * .013,
+                                        ),
+                                        height: constrains.maxHeight * .11,
+                                        child: Material(
+                                          color: Colors.transparent,
+                                          child: InkWell(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            splashColor:
+                                                Constants.DARK_BLUE_COLOR,
+                                            onTap: () {
+                                              testController.setUserTestMcqs(
+                                                userMcqs: testController
+                                                        .getSelectedMcqs[
+                                                    testController
+                                                        .getCurrentMcqsIndex],
+                                                userEnteredAnswer: testController
+                                                        .getCurrentMcqsAnswers[
+                                                    index],
+                                              );
+                                              if (testController
+                                                          .getCurrentMcqsAnswers[
+                                                      index] ==
+                                                  testController
+                                                      .getSelectedMcqs[
+                                                          testController
+                                                              .getCurrentMcqsIndex]
+                                                      .rightAnswer) {
+                                                testController
+                                                        .setObtainedMarks =
+                                                    testController
+                                                            .getObtainedMarks +
+                                                        1;
+                                              } else {
+                                                testController
+                                                        .setWrongAnswerByUser =
+                                                    testController
+                                                            .getWrongAnswerByUser +
+                                                        1;
+                                              }
+                                              if (testController
+                                                          .getCurrentMcqsIndex +
+                                                      1 ==
+                                                  testController
+                                                      .getSelectedMcqs.length) {
+                                                Get.toNamed(
+                                                    Routes.getResultPage());
+                                              } else {
+                                                testController.nextQuestion();
+                                              }
+                                            },
+                                          ),
+                                        ),
                                       ),
                                     ],
+                                  ),
+                                ),
+                                itemCount:
+                                    testController.getCurrentMcqsAnswers.length,
+                              ),
+                            ],
+                          ),
+                        ),
+                        testController.getIsTestStart
+                            ? const SizedBox()
+                            : Container(
+                                decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(
                                       15,
                                     ),
-                                  ),
-                                  child: Text(
-                                    testController.getCurrentMcqsAnswers[index],
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      color: Constants.DARK_BLACK_COLOR,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.symmetric(
-                                    vertical: constrains.maxHeight * .013,
-                                  ),
-                                  height: constrains.maxHeight * .11,
-                                  child: Material(
-                                    color: Colors.transparent,
-                                    child: InkWell(
-                                      borderRadius: BorderRadius.circular(15),
-                                      splashColor: Constants.DARK_BLUE_COLOR,
-                                      onTap: () {
-                                        testController.nextQuestion();
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          itemCount:
-                              testController.getCurrentMcqsAnswers.length,
-                        ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        blurRadius: 5,
+                                        blurStyle: BlurStyle.inner,
+                                        color: Constants.LIGHT_BLUE_COLOR
+                                            .withOpacity(.9),
+                                      ),
+                                    ]),
+                              ),
                       ],
                     ),
                   ),
@@ -189,6 +246,18 @@ class _TestPageState extends State<TestPage> {
                     icon: Constants.SKIP_ICON,
                     buttonText: "Skip",
                     constrains: constrains,
+                    press: () {
+                      testController.setUserTestMcqs(
+                        userMcqs: testController.getSelectedMcqs[
+                            testController.getCurrentMcqsIndex],
+                        userEnteredAnswer: "Skipped",
+                      );
+                      if (testController.getIsTestStart) {
+                        testController.nextQuestion();
+                        testController.setSkippedMcqs =
+                            testController.getSkippedMcqs + 1;
+                      }
+                    },
                   ),
                   Flexible(
                     flex: 1,
@@ -220,22 +289,7 @@ class _TestPageState extends State<TestPage> {
                         ),
                       ],
                     ),
-
-                    // child: CountdownTimer(
-                    //   controller: _controller,
-                    //   onEnd: () => Get.offAndToNamed(
-                    //     Routes.getResultPage(),
-                    //   ),
-                    //   widgetBuilder: (context, time) {
-                    //     return Text(
-                    //       "Left Time: ${time!.min}Min ${time.sec}Sec",
-                    //       style: TextStyle(
-                    //         color: Constants.DARK_BLACK_COLOR,
-                    //         fontSize: 20,
-                    //       ),
-                    //     );
-                    //   },
-                    // ),
+                    child: TimeDownCounter(),
                   ),
                   Flexible(
                     flex: 1,

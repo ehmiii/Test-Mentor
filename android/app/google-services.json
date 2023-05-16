@@ -8,6 +8,42 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:30269175897:android:03c82d5838a11e8b959948",
+        "android_client_info": {
+          "package_name": "com.ak.gat_cs_trainer_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "30269175897-pg5v04p1ci5pl5re79gntqpq813fn35k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpcCtfcvPD8MjKhfY7GFKftyoU90sVDds"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "30269175897-pg5v04p1ci5pl5re79gntqpq813fn35k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "30269175897-hf69be7vpfi1ui6le9pg63rhp3ldd0kj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.testmentor"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:30269175897:android:3b2f5a5a9c0c449e959948",
         "android_client_info": {
           "package_name": "com.testmentor.by_ak"
@@ -30,6 +66,13 @@
             {
               "client_id": "30269175897-pg5v04p1ci5pl5re79gntqpq813fn35k.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "30269175897-hf69be7vpfi1ui6le9pg63rhp3ldd0kj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.testmentor"
+              }
             }
           ]
         }

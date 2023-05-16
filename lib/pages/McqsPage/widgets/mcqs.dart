@@ -1,21 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:testmentor/utils/constants.dart';
+import 'package:get/get.dart';
+import '/controllers/home_controller.dart';
+import '/models/mcqs_model.dart';
+import '/utils/constants.dart';
 
 class Mcqs extends StatefulWidget {
-  final String question;
-  final String wrongAnswer1;
-  final String wrongAnswer2;
-  final String wrongAnswer3;
-  final String rightAnswer;
-  Mcqs({
+  final McqsModel mcqs;
+  const Mcqs({
     super.key,
-    required this.question,
-    required this.wrongAnswer1,
-    required this.wrongAnswer2,
-    required this.wrongAnswer3,
-    required this.rightAnswer,
+    required this.mcqs,
   });
 
   @override
@@ -28,10 +23,10 @@ class _McqsState extends State<Mcqs> {
   @override
   initState() {
     answers = [
-      widget.wrongAnswer1,
-      widget.wrongAnswer2,
-      widget.wrongAnswer3,
-      widget.rightAnswer,
+      widget.mcqs.wrongAnswer1,
+      widget.mcqs.wrongAnswer2,
+      widget.mcqs.wrongAnswer3,
+      widget.mcqs.rightAnswer,
     ];
     answers.shuffle();
     super.initState();
@@ -45,7 +40,7 @@ class _McqsState extends State<Mcqs> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          widget.question,
+          widget.mcqs.question,
           style: const TextStyle(
             fontSize: 18,
           ),
@@ -54,7 +49,7 @@ class _McqsState extends State<Mcqs> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             for (int i = 0; i < answers.length; i++)
-              isAnswerButtonClicked && answers[i] == widget.rightAnswer
+              isAnswerButtonClicked && answers[i] == widget.mcqs.rightAnswer
                   ? Container(
                       padding: const EdgeInsets.all(2),
                       decoration: BoxDecoration(
@@ -65,7 +60,7 @@ class _McqsState extends State<Mcqs> {
                         ),
                       ),
                       child: Text(
-                        "${sequence[i]} ${widget.rightAnswer}",
+                        "${sequence[i]} ${widget.mcqs.rightAnswer}",
                         style: const TextStyle(
                           fontSize: 18,
                         ),
@@ -89,7 +84,7 @@ class _McqsState extends State<Mcqs> {
                 });
               },
               child: const Text(
-                "Answer",
+                "Click for answer",
                 style: TextStyle(
                   fontSize: 16,
                 ),
@@ -101,7 +96,179 @@ class _McqsState extends State<Mcqs> {
                   EdgeInsets.zero,
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  barrierColor: Constants.DARK_BLUE_COLOR.withOpacity(.7),
+                  barrierDismissible: false,
+                  builder: (_) {
+                    return Dialog(
+                      backgroundColor: Constants.LIGHT_BLUE_COLOR,
+                      child: GetBuilder<HomeController>(
+                        builder: (homeController) {
+                          return Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * .75,
+                                height: 50,
+                                child: CheckboxListTile(
+                                  // contentPadding: EdgeInsets.zero,
+                                  value:
+                                      homeController.getQuestionErrorSelected,
+                                  onChanged: (value) {
+                                    homeController.setQuestionErrorSelected =
+                                        !homeController
+                                            .getQuestionErrorSelected;
+                                    homeController.update();
+                                  },
+                                  activeColor: Constants.DARK_BLUE_COLOR,
+                                  side: BorderSide(
+                                    color: Constants.DARK_BLUE_COLOR,
+                                  ),
+                                  title: FittedBox(
+                                    child: Text(
+                                      "Question (Error/Spell Mistake)",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Constants.DARK_BLUE_COLOR,
+                                      ),
+                                    ),
+                                  ),
+                                  // fillColor: MaterialStateProperty.all(
+                                  //   Constants.DARK_BLUE_COLOR,
+                                  // ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * .75,
+                                height: 50,
+                                child: CheckboxListTile(
+                                  // contentPadding: EdgeInsets.zero,
+                                  value: homeController.getOptionErrorSelected,
+                                  onChanged: (value) {
+                                    homeController.setOptionErrorSelected =
+                                        !homeController.getOptionErrorSelected;
+                                    homeController.update();
+                                  },
+                                  activeColor: Constants.DARK_BLUE_COLOR,
+                                  side: BorderSide(
+                                    color: Constants.DARK_BLUE_COLOR,
+                                  ),
+                                  title: FittedBox(
+                                    child: Text(
+                                      "Options (Error/Spell Mistake)",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Constants.DARK_BLUE_COLOR,
+                                      ),
+                                    ),
+                                  ),
+                                  // fillColor: MaterialStateProperty.all(
+                                  //   Constants.DARK_BLUE_COLOR,
+                                  // ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 13.0,
+                                ),
+                                child: TextFormField(
+                                  controller:
+                                      homeController.getMcqsCommentController,
+                                  decoration: InputDecoration(
+                                    hintText: "Any Comments",
+                                    hintStyle: TextStyle(
+                                      fontSize: 18,
+                                      color:
+                                          Constants.DARK_BLUE_COLOR.withOpacity(
+                                        .5,
+                                      ),
+                                    ),
+                                    labelText: "Comment",
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(
+                                        8,
+                                      ),
+                                      borderSide: BorderSide(
+                                        color: Constants.DARK_BLUE_COLOR,
+                                      ),
+                                    ),
+                                  ),
+                                  maxLength: 100,
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () async {
+                                      Navigator.maybePop(context);
+                                      await homeController
+                                          .userReport(widget.mcqs);
+                                      homeController.setQuestionErrorSelected =
+                                          false;
+                                      homeController.setOptionErrorSelected =
+                                          false;
+                                      homeController
+                                          .getMcqsCommentController.text = "";
+                                    },
+                                    child: const Text(
+                                      "Submit Report",
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 15.0,
+                                    ),
+                                    child: Material(
+                                        color: Colors.transparent,
+                                        child: InkWell(
+                                          splashColor:
+                                              Constants.DARK_BLUE_COLOR,
+                                          onTap: () {
+                                            homeController
+                                                    .setQuestionErrorSelected =
+                                                false;
+                                            homeController
+                                                .setOptionErrorSelected = false;
+                                            homeController
+                                                .getMcqsCommentController
+                                                .text = "";
+                                            Navigator.maybePop(context);
+                                          },
+                                          child: SizedBox(
+                                            height: 40,
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  "Close",
+                                                  style: TextStyle(
+                                                    fontSize: 15,
+                                                    color: Constants
+                                                        .DARK_BLUE_COLOR,
+                                                  ),
+                                                ),
+                                                Icon(
+                                                  Icons.close,
+                                                  color:
+                                                      Constants.DARK_BLUE_COLOR,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        )),
+                                  )
+                                ],
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    );
+                  },
+                );
+              },
               icon: const Icon(
                 Icons.report,
               ),

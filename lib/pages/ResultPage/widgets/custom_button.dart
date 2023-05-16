@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import '../../../utils/constants.dart';
 
 class CustomButton extends StatelessWidget {
-  final String icon;
+  final String? icon;
   final String buttonText;
   final BoxConstraints constrains;
+  final VoidCallback press;
   const CustomButton({
     super.key,
-    required this.icon,
+    this.icon,
     required this.buttonText,
     required this.constrains,
+    required this.press,
   });
 
   @override
@@ -44,7 +46,7 @@ class CustomButton extends StatelessWidget {
           bottomLeft: Radius.circular(25),
         ),
         child: InkWell(
-          onTap: () {},
+          onTap: press,
           splashColor: Constants.DARK_BLUE_COLOR,
           borderRadius: const BorderRadius.only(
             topRight: Radius.circular(25),
@@ -60,29 +62,37 @@ class CustomButton extends StatelessWidget {
                   bottomLeft: Radius.circular(25),
                 ),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  SizedBox(
-                    width: cons.maxWidth * .5,
-                    height: cons.maxWidth * .55,
-                    child: FittedBox(
-                      child: Text(
-                        buttonText,
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Constants.DARK_BLUE_COLOR,
-                        ),
+              child: icon == null
+                  ? Text(
+                      buttonText,
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Constants.DARK_BLUE_COLOR,
                       ),
+                    )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        SizedBox(
+                          width: cons.maxWidth * .5,
+                          height: cons.maxWidth * .55,
+                          child: FittedBox(
+                            child: Text(
+                              buttonText,
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Constants.DARK_BLUE_COLOR,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: cons.maxWidth * .40,
+                          height: cons.maxWidth * .40,
+                          child: Image.asset(icon!),
+                        ),
+                      ],
                     ),
-                  ),
-                  SizedBox(
-                    width: cons.maxWidth * .40,
-                    height: cons.maxWidth * .40,
-                    child: Image.asset(icon),
-                  ),
-                ],
-              ),
             );
           }),
         ),

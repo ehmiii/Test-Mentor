@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
-import 'package:testmentor/controllers/home_controller.dart';
-import 'package:testmentor/models/mcqs_model.dart';
-import 'package:testmentor/pages/McqsPage/widgets/test_mcqs_selection_dialog.dart';
-import 'package:testmentor/utils/constants.dart';
+import '/controllers/home_controller.dart';
+import '/models/mcqs_model.dart';
+import '/pages/McqsPage/widgets/test_mcqs_selection_dialog.dart';
+import '/utils/constants.dart';
 
 import '../../utils/widgets/custom_appbar.dart';
 import 'widgets/mcqs.dart';
@@ -47,57 +47,48 @@ class McqsPage extends StatelessWidget {
         },
       ),
       body: GetBuilder<HomeController>(builder: (homeController) {
-        return RefreshIndicator(
-          onRefresh: () => homeController
-              .getMcqsFromDataBase(homeController.getSelectedCategory),
-          child: Container(
-            color: Constants.LIGHT_BLUE_COLOR,
-            padding: const EdgeInsets.only(top: 8),
-            child: ListView.builder(
-              itemBuilder: (_, index) {
-                McqsModel mcqs = homeController.getMcqs[index];
-                return Container(
-                  padding: const EdgeInsets.only(
-                    top: 8,
-                    left: 8,
-                    right: 8,
-                  ),
-                  margin: const EdgeInsets.only(
-                    bottom: 8,
-                    right: 8,
-                    left: 8,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    gradient: LinearGradient(
-                      colors: [
-                        Constants.BLUE_COLOR,
-                        Constants.LIGHT_BLUE_COLOR,
-                      ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(
-                          .5,
-                        ),
-                        offset: const Offset(2, 2),
-                        blurRadius: 2,
-                      ),
+        return Container(
+          color: Constants.LIGHT_BLUE_COLOR,
+          padding: const EdgeInsets.only(top: 8),
+          child: ListView.builder(
+            itemBuilder: (_, index) {
+              return Container(
+                padding: const EdgeInsets.only(
+                  top: 8,
+                  left: 8,
+                  right: 8,
+                ),
+                margin: const EdgeInsets.only(
+                  bottom: 8,
+                  right: 8,
+                  left: 8,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
+                  gradient: LinearGradient(
+                    colors: [
+                      Constants.BLUE_COLOR,
+                      Constants.LIGHT_BLUE_COLOR,
                     ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
                   ),
-                  child: Mcqs(
-                    question: mcqs.question,
-                    rightAnswer: mcqs.rightAnswer,
-                    wrongAnswer1: mcqs.wrongAnswer1,
-                    wrongAnswer2: mcqs.wrongAnswer2,
-                    wrongAnswer3: mcqs.wrongAnswer3,
-                  ),
-                );
-              },
-              itemCount: homeController.getMcqs.length,
-            ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(
+                        .5,
+                      ),
+                      offset: const Offset(2, 2),
+                      blurRadius: 2,
+                    ),
+                  ],
+                ),
+                child: Mcqs(
+                  mcqs: homeController.getMcqs[index],
+                ),
+              );
+            },
+            itemCount: homeController.getMcqs.length,
           ),
         );
       }),

@@ -31,7 +31,7 @@ class InitialPage extends StatelessWidget {
                   child: Container(),
                 ),
                 Container(
-                  height: constrains.maxHeight * .5,
+                  height: constrains.maxHeight * .55,
                   width: constrains.maxWidth,
                   padding: EdgeInsets.symmetric(
                     horizontal: constrains.maxWidth * .05,
@@ -50,7 +50,8 @@ class InitialPage extends StatelessWidget {
                         height: constrains.maxHeight * .03,
                       ),
                       Text(
-                        "Welcome to TestMentor",
+                        "Welcome to GAT(CS) Trainer APP",
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Constants.LIGHT_BLUE_COLOR,
                           fontSize: 27,
@@ -59,14 +60,55 @@ class InitialPage extends StatelessWidget {
                       SizedBox(
                         height: constrains.maxHeight * .01,
                       ),
-                      Text(
-                        "From here your success start. TestMentor will make you able to pass NTS test but for now it is only for Computer Science and IT related students.",
+                      Text.rich(
                         textAlign: TextAlign.justify,
                         style: TextStyle(
                           color: Constants.LIGHT_BLUE_COLOR,
                           fontSize: 20,
                         ),
+                        const TextSpan(
+                          children: [
+                            TextSpan(
+                              text:
+                                  "Dear User, Thank you for choosing our app for test preparation. Please select the mode that suits you:",
+                            ),
+                            TextSpan(
+                              text: "\nSpecialist:",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            TextSpan(
+                              text:
+                                  " If you have IT skills and want to contribute, click on Specialist.",
+                            ),
+                            TextSpan(
+                              text: "\nStudent: ",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            TextSpan(
+                              text:
+                                  "If you want to prepare for test, click on Student.",
+                            ),
+                            TextSpan(
+                              text:
+                                  "\nWe value your choice and aim to provide the best experience for all users.",
+                            ),
+                          ],
+                        ),
                       ),
+                      // Expanded(
+                      //   child: Text(
+                      //     """Dear User, Thank you for choosing our app for test preparation. Please select the mode that suits you: Specialist: If you have IT skills and want to contribute, click here.\nStudent: If you want to prepare for tests, click here. We value your input and aim to provide the best experience for all users.\nBest regards,\nAK Production Team""",
+                      //     textAlign: TextAlign.justify,
+                      //     style: TextStyle(
+                      //       color: Constants.LIGHT_BLUE_COLOR,
+                      //       fontSize: 20,
+                      //     ),
+                      //   ),
+                      // ),
                       Flexible(
                         flex: 2,
                         child: Container(),

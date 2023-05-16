@@ -4,11 +4,13 @@
 
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
+
 McqsModel mcqsModelFromJson(String str) => McqsModel.fromJson(json.decode(str));
 
 String mcqsModelToJson(McqsModel data) => json.encode(data.toJson());
 
-class McqsModel {
+class McqsModel extends Equatable {
   McqsModel({
     required this.uploaderName,
     required this.category,
@@ -19,6 +21,7 @@ class McqsModel {
     required this.rightAnswer,
     required this.userId,
     this.id,
+    this.rejectionMessage,
   });
 
   String uploaderName;
@@ -30,17 +33,17 @@ class McqsModel {
   String rightAnswer;
   String? id;
   String? userId;
-
+  String? rejectionMessage;
   factory McqsModel.fromJson(Map<String, dynamic> json) => McqsModel(
-        uploaderName: json["uploaderName"],
-        category: json["category"],
-        question: json["question"],
-        wrongAnswer1: json["wrongAnswer1"],
-        wrongAnswer2: json["wrongAnswer2"],
-        wrongAnswer3: json["wrongAnswer3"],
-        rightAnswer: json["rightAnswer"],
-        userId: json['userId'],
-      );
+      uploaderName: json["uploaderName"],
+      category: json["category"],
+      question: json["question"],
+      wrongAnswer1: json["wrongAnswer1"],
+      wrongAnswer2: json["wrongAnswer2"],
+      wrongAnswer3: json["wrongAnswer3"],
+      rightAnswer: json["rightAnswer"],
+      userId: json["userId"],
+      rejectionMessage: json["rejectionMessage"]);
 
   Map<String, dynamic> toJson() => {
         "uploaderName": uploaderName,
@@ -51,5 +54,21 @@ class McqsModel {
         "wrongAnswer3": wrongAnswer3,
         "rightAnswer": rightAnswer,
         "userId": userId,
+        "rejectionMessage": rejectionMessage,
       };
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [
+        uploaderName,
+        category,
+        question,
+        wrongAnswer1,
+        wrongAnswer2,
+        wrongAnswer3,
+        rightAnswer,
+        id,
+        userId,
+        rejectionMessage,
+      ];
 }

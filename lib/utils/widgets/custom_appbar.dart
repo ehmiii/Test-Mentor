@@ -10,7 +10,7 @@ class CustomAppBar {
     required BuildContext context,
     String? title,
     String? buttonText,
-    IconData? icon,
+    Widget? widget,
     VoidCallback? buttonPressFunction,
     VoidCallback? leadingButtonPressFunction,
     IconData? leadingButtonIcon,
@@ -106,7 +106,7 @@ class CustomAppBar {
       ),
       centerTitle: true,
       actions: [
-        buttonText == null && icon == null
+        buttonText == null && widget == null
             ? const SizedBox()
             : Container(
                 decoration: BoxDecoration(
@@ -144,12 +144,8 @@ class CustomAppBar {
                           ],
                         ),
                       ),
-                      child: buttonText == null && icon != null
-                          ? Icon(
-                              icon,
-                              size: 35,
-                              color: Constants.LIGHT_BLUE_COLOR,
-                            )
+                      child: buttonText == null && widget != null
+                          ? widget
                           : Text(
                               buttonText ?? "",
                               // "Save",

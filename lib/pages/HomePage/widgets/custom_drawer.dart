@@ -3,12 +3,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:testmentor/controllers/home_controller.dart';
-import 'package:testmentor/controllers/signin_controller.dart';
-import 'package:testmentor/models/user_information_model.dart';
-import 'package:testmentor/utils/Routes/routes.dart';
+import '/controllers/home_controller.dart';
+import '/controllers/signin_controller.dart';
+import '/models/user_information_model.dart';
+import '/utils/Routes/routes.dart';
 
-import '../home_page.dart';
+import '../../SubjectsPage/subjects_page.dart';
 import '../../ProfilePage/profile_page.dart';
 import '../../SettingPage/setting_page.dart';
 import '../../../utils/constants.dart';
@@ -29,7 +29,9 @@ class CustomDrawer {
           borderRadius: BorderRadius.circular(5),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 8,
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
@@ -52,7 +54,7 @@ class CustomDrawer {
                               width: 100.0,
                               height: 100.0,
                               margin: const EdgeInsets.only(
-                                top: 10.0,
+                                top: 5.0,
                                 bottom: 10.0,
                               ),
                               clipBehavior: Clip.antiAlias,
@@ -126,7 +128,7 @@ class CustomDrawer {
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (_) => HomePage(),
+                      builder: (_) => SubjectsPage(),
                     ),
                   );
                 },
@@ -154,26 +156,16 @@ class CustomDrawer {
               ),
               ListTile(
                 onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => const SettingPage(),
-                    ),
-                  );
+                  // Get.toNamed(Routes.getTestPage());
                 },
-                leading: const Icon(Icons.settings),
-                title: const Text('Settings'),
+                leading: const Icon(Icons.quiz),
+                title: const Text('Drill Test'),
               ),
               const SizedBox(
                 height: spaceBetweenListTile,
               ),
               ListTile(
-                onTap: () {
-                  // Navigator.of(context).push(
-                  //   MaterialPageRoute(
-                  //     builder: (_) => const SettingPage(),
-                  //   ),
-                  // );
-                },
+                onTap: () {},
                 leading: const Icon(Icons.menu_book_outlined),
                 title: const Text('Test Guidelines'),
               ),
@@ -181,15 +173,25 @@ class CustomDrawer {
                 height: spaceBetweenListTile,
               ),
               ListTile(
-                onTap: () {},
-                leading: const Icon(
-                  Icons.star_rate_rounded,
-                ),
-                title: const Text('Rate Us'),
+                onTap: () {
+                  Get.toNamed(Routes.getTestHistoryPage());
+                },
+                leading: const Icon(Icons.history),
+                title: const Text('Test History'),
               ),
               const SizedBox(
                 height: spaceBetweenListTile,
               ),
+              // ListTile(
+              //   onTap: () {},
+              //   leading: const Icon(
+              //     Icons.star_rate_rounded,
+              //   ),
+              //   title: const Text('Rate Us'),
+              // ),
+              // const SizedBox(
+              //   height: spaceBetweenListTile,
+              // ),
               ListTile(
                 onTap: () {},
                 leading: const Icon(

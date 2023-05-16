@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
-import 'package:testmentor/controllers/signup_controller.dart';
+import '/controllers/signup_controller.dart';
 
 import '../../../../utils/constants.dart';
 import 'give_quiz_button.dart';

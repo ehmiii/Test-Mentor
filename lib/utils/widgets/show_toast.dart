@@ -1,5 +1,5 @@
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:testmentor/utils/constants.dart';
+import '/utils/constants.dart';
 
 class ShowToast {
   static SHOW_TOAST(String message) {

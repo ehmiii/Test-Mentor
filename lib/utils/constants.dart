@@ -26,10 +26,13 @@ class Constants {
   });
 
   // Logos Path
-  static String DARK_BACKGROUN_LOGO =
-      "assets/images/forDarkBlueBackgroundLogo.png";
-  static String LIGHT_BACKGROUN_LOGO =
-      "assets/images/forLightBlueBackgroundLogo.png";
+  // static String DARK_BACKGROUN_LOGO =
+  //     "assets/images/forDarkBlueBackgroundLogo.png";
+  // static String LIGHT_BACKGROUN_LOGO =
+  //     "assets/images/forLightBlueBackgroundLogo.png";
+  static String DARK_BACKGROUN_LOGO_SVG = "assets/images/ForDarkBackground.svg";
+  static String LIGHT_BACKGROUN_LOGO_SVG =
+      "assets/images/ForLightBackground.svg";
   // Image Icons path
   static String BACK_ICON = "assets/icons/back_icon.png";
   static String CLOSE_ICON = "assets/icons/close_icon.png";
@@ -45,6 +48,10 @@ class Constants {
   static String PROFILE_IMAGE = 'assets/images/profile_image.png';
   static String CHECK_MARK = 'assets/icons/accept_icon.png';
   static String REJECT_ICON = 'assets/icons/reject_icon.png';
+  static String PDF_ICON = 'assets/icons/pdf_icon.png';
+  static String PREPARATION_MODE_ICON =
+      "assets/icons/preparation_mode_icon.png";
+  static String TESS_MODE_ICON = "assets/icons/test_mode.png";
 
   //Colors List
   static List<Color> APP_COLORS = [
@@ -55,5 +62,8 @@ class Constants {
     Colors.white
   ];
 
-  //Custom AppBar
+  // Time formator
+  static String FORMATE_TIME(int timeInSeconds) {
+    return "${timeInSeconds ~/ 60 < 10 ? 0 : ""}${timeInSeconds ~/ 60}:${(timeInSeconds % 60 == 0) ? "00" : timeInSeconds % 60 < 10 ? "0${timeInSeconds % 60}" : "${timeInSeconds % 60}"} min";
+  }
 }

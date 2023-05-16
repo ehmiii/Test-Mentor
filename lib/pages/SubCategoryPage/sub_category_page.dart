@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:testmentor/pages/McqsLengthSelectionPage/McqsLengthSelectionPage.dart';
-import 'package:testmentor/utils/constants.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import '/pages/McqsLengthSelectionPage/McqsLengthSelectionPage.dart';
+import '/utils/constants.dart';
 
 class SubCategoryPage extends StatelessWidget {
   const SubCategoryPage({super.key});
@@ -84,11 +85,14 @@ class SubCategoryPage extends StatelessWidget {
                           // ),
                         ),
                         child: ClipOval(
-                          child: Image.asset(
-                            Constants.DARK_BACKGROUN_LOGO,
-                            fit: BoxFit.fill,
-                          ),
-                        ),
+                            child: SvgPicture.asset(
+                          Constants.DARK_BACKGROUN_LOGO_SVG,
+                        )
+                            // child: Image.asset(
+                            //   Constants.DARK_BACKGROUN_LOGO,
+                            //   fit: BoxFit.fill,
+                            // ),
+                            ),
                       ),
                       SizedBox(
                         width: constrains.maxWidth * .02,

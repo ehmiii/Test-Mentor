@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:testmentor/controllers/signup_controller.dart';
+import '../data/categories_names.dart';
+import '/controllers/signup_controller.dart';
 
 import '../../../utils/constants.dart';
-import '../data/categories_names.dart';
 
 class CategorySelectionDialog {
   static Widget CATEGORY_BUTTON({
@@ -62,7 +62,9 @@ class CategorySelectionDialog {
     );
   }
 
-  static Dialog CATEGORY_SELECTION_DIALOG(BuildContext context) {
+  static Dialog CATEGORY_SELECTION_DIALOG(
+    BuildContext context,
+  ) {
     final textButtonStyle = TextButton.styleFrom(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(

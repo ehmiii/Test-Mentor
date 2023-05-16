@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:testmentor/controllers/signin_controller.dart';
-import 'package:testmentor/controllers/signup_controller.dart';
-import 'package:testmentor/utils/Routes/routes.dart';
+import '/controllers/signin_controller.dart';
+import '/controllers/signup_controller.dart';
+import '/utils/Routes/routes.dart';
 
 import '../../../../utils/constants.dart';
 import '../../../../utils/widgets/error_dialog.dart';
