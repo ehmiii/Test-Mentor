@@ -28,6 +28,13 @@ class AddMcqsController extends GetxController {
   List<TextEditingController> _addMcqsControllers = [];
 
   TextEditingController get getQuestionController => _questionController;
+  TextEditingController get getWrongAnswer1Controller =>
+      _wrongAnswer1Controller;
+  TextEditingController get getWrongAnswer2Controller =>
+      _wrongAnswer2Controller;
+  TextEditingController get getWrongAnswer3Controller =>
+      _wrongAnswer3Controller;
+  TextEditingController get getRightAnswerController => _rightAnswerController;
   List<TextEditingController> get getAddMcqsController => _addMcqsControllers;
   List<String> get getListHintText => _listHintText;
   GlobalKey<FormState> get getTextFormGlobalKey => _textFormGlobalKey;
@@ -38,15 +45,30 @@ class AddMcqsController extends GetxController {
     _isLoading.value = value;
   }
 
+// Getting all questions related user specialization.
+  List<String> checkingQuestionDuplication() {
+    List<String> questions = [];
+    for (var category in Get.find<HomeController>().getSubjectsMcqs) {
+      for (var subject in category.subSubjects) {
+        if (subject.subSubjectName == _userInformationModel.specialization) {
+          for (var mcqs in subject.mcqs) {
+            if (!questions.contains(mcqs.question)) {
+              questions.add(mcqs.question);
+            }
+          }
+        }
+      }
+    }
+    return questions;
+  }
+
   Future<void> addMcqs() async {
     if (_textFormGlobalKey.currentState!.validate()) {
       String url =
           "https://testmentor-41a06-default-rtdb.firebaseio.com/pending/${_userInformationModel.userId}.json?";
 
       try {
-        if (Get.arguments != null && Get.arguments[1]) {
-          Get.find<HomeController>().deleteNotification(Get.arguments[0]);
-        }
+        // Follwoing arguments comming from notification page when user click on edit button
         setIsLoading = true;
         _addmcqs = McqsModel(
           uploaderName: _userInformationModel.userName,
@@ -67,6 +89,9 @@ class AddMcqsController extends GetxController {
         ShowToast.SHOW_TOAST(
           "Mcqs submitted for review",
         );
+        if (Get.arguments != null && Get.arguments[1]) {
+          Get.find<HomeController>().deleteNotification(Get.arguments[0]);
+        }
         Get.back();
       } catch (error) {
         if (error.toString().contains("Failed host lookup")) {

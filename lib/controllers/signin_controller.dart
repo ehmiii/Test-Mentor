@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:gat_cs_trainer_app/utils/widgets/show_toast.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
@@ -114,6 +115,28 @@ class SignInController extends GetxController {
     } finally {
       setIsLoading = false;
     }
+  }
+
+  Future<void> forgetPassword() async {
+    String url =
+        "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyBpcCtfcvPD8MjKhfY7GFKftyoU90sVDds";
+    try {
+      final respons = await http.post(Uri.parse(url), body: {
+        "requestType": "PASSWORD_RESET",
+        "email": _emailController.text
+      });
+      final decodedRespon = jsonDecode(respons.body);
+      if (decodedRespon['error']['message'] == "EMAIL_NOT_FOUND") {
+        ShowToast.SHOW_TOAST(
+            "Given email not found. Please enter correct email");
+        return;
+      }
+      ShowToast.SHOW_TOAST("Reset Password link send to your ");
+      _emailController.text = "";
+    } catch (e) {
+      print(e);
+      rethrow;
+    } finally {}
   }
 
   @override

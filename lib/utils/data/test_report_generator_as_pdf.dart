@@ -39,26 +39,25 @@ class TestReportGeneratorAsPdf {
         "${minutes.toString().padLeft(2, "0")}Min ${seconds.toString().padLeft(2, "0")}Sec";
     String fileName =
         DateFormat("dd-MMM-yyyy hh:mm:ss a").format(DateTime.now());
-    final data =
-        await rootBundle.load("assets/images/forLightBlueBackgroundLogo.png");
+    final data = await rootBundle.load("assets/images/ForLightBackground.png");
     PdfDocument document = PdfDocument();
     final page = document.pages.add();
-    page.graphics.drawString(
-      "Test Mentor",
-      PdfStandardFont(
-        PdfFontFamily.timesRoman,
-        20,
-      ),
-      bounds: Rect.fromLTWH((page.getClientSize().width / 2 + 5), 35, 300, 50),
-      format: PdfStringFormat(
-        alignment: PdfTextAlignment.justify,
-      ),
-      brush: PdfBrushes.steelBlue,
-    );
+    // page.graphics.drawString(
+    //   "Test Mentor",
+    //   PdfStandardFont(
+    //     PdfFontFamily.timesRoman,
+    //     20,
+    //   ),
+    //   bounds: Rect.fromLTWH((page.getClientSize().width / 2 + 5), 35, 300, 50),
+    //   format: PdfStringFormat(
+    //     alignment: PdfTextAlignment.justify,
+    //   ),
+    //   brush: PdfBrushes.steelBlue,
+    // );
     page.graphics.drawImage(
       PdfBitmap(
           data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes)),
-      Rect.fromLTWH(((page.getClientSize().width / 2) - 100), 0, 100, 100),
+      Rect.fromLTWH(((page.getClientSize().width / 2) - 80), 0, 100, 100),
     );
     page.graphics.drawString(
       "Date: ${DateFormat("dd-MMM-yyyy").format(DateTime.now())}",
@@ -149,7 +148,7 @@ class TestReportGeneratorAsPdf {
       bounds: Rect.fromLTWH(page.size.width * .6, 325, 100, 50),
     );
     page.graphics.drawString(
-      "Develop By AK & HS",
+      "Develop By Ahmad Khan & Hamza Sher",
       PdfStandardFont(PdfFontFamily.timesRoman, 12),
       bounds: Rect.fromLTWH(
           page.size.width * .30, page.getClientSize().height - 15, 300, 50),

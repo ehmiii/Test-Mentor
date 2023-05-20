@@ -1,5 +1,7 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:gat_cs_trainer_app/utils/widgets/show_toast.dart';
 import 'package:get/get.dart';
 import '/controllers/signin_controller.dart';
 import '/utils/constants.dart';
@@ -201,9 +203,64 @@ class _SignInPageState extends State<SignInPage> {
                                   ),
 
                                   TextButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        signInController
+                                            .getEmailController.text = "";
+                                        AwesomeDialog(
+                                          context: context,
+                                          dialogType: DialogType.info,
+                                          headerAnimationLoop: false,
+                                          body: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: TextFormField(
+                                              controller: signInController
+                                                  .getEmailController,
+                                              validator: (value) {
+                                                if (value!.isEmpty) {
+                                                  return "Please enter your email";
+                                                } else if (!value.isEmail) {
+                                                  return "Please enter correct email";
+                                                } else {
+                                                  return null;
+                                                }
+                                              },
+                                              decoration: InputDecoration(
+                                                label: Text("Email"),
+                                                hintText:
+                                                    "Please enter your email",
+                                                border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          autoDismiss: false,
+                                          onDismissCallback: (vlaue) {},
+                                          btnOkOnPress: () async {
+                                            if (signInController
+                                                .getEmailController
+                                                .text
+                                                .isEmpty) {
+                                              ShowToast.SHOW_TOAST(
+                                                  "Please enter your email");
+                                            } else if (!GetUtils.isEmail(
+                                                signInController
+                                                    .getEmailController.text)) {
+                                              ShowToast.SHOW_TOAST(
+                                                  "Please enter correct email");
+                                            } else {
+                                              await signInController
+                                                  .forgetPassword();
+                                            }
+                                          },
+                                          btnCancelOnPress: () {
+                                            Get.back();
+                                          },
+                                        ).show();
+                                      },
                                       child: Text(
-                                        " Forget Password?",
+                                        "Forget Password?",
                                         style: TextStyle(
                                             color: Constants.LIGHT_BLUE_COLOR,
                                             fontSize: 16),

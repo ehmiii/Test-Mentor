@@ -122,17 +122,19 @@ class HomePage extends StatelessWidget {
                     cardTitle: "Preparation Mode",
                     icon: Constants.PREPARATION_MODE_ICON,
                     press: () async {
-                      if (homeController.errorMessage == "Done") {
-                        Get.toNamed(Routes.getSubjectsSelection());
-                      } else {
-                        ShowToast.SHOW_TOAST(homeController.errorMessage == ""
-                            ? "Apologies for the error on your side. Please refresh or restart and contact support if the issue persists. Thank you."
-                            : homeController.errorMessage);
-                        if (homeController.getMcqs.isEmpty) {
-                          await homeController
-                              .getAvaliableCategoriesAndNotifications();
-                        }
-                      }
+                      homeController.setUserChoice = "Preparation";
+                      Get.toNamed(Routes.getSubjectsSelection());
+                      // if (homeController.errorMessage == "Done") {
+                      // homeController.setUserChoice = "Preparation";
+                      // } else {
+                      //   ShowToast.SHOW_TOAST(homeController.errorMessage == ""
+                      //       ? "Apologies for the error on your side. Please refresh or restart and contact support if the issue persists. Thank you."
+                      //       : homeController.errorMessage);
+                      //   if (homeController.getMcqs.isEmpty) {
+                      //     await homeController
+                      //         .getAvaliableCategoriesAndNotifications();
+                      //   }
+                      // }
                     },
                   ),
                   CustomCard(
@@ -142,19 +144,23 @@ class HomePage extends StatelessWidget {
                       if (homeController.getMcqs.isEmpty) {
                         homeController.getAvaliableCategoriesAndNotifications();
                       }
-                      Get.toNamed(Routes.getSubjectsSelection(),
-                          arguments: ["subject_test"]);
+                      homeController.setUserChoice = "Test";
+                      Get.toNamed(Routes.getSubjectsSelection());
                     },
                   ),
                   CustomCard(
                     cardTitle: "GAT Test Mode",
                     icon: Constants.TESS_MODE_ICON,
-                    press: () {},
+                    press: () {
+                      homeController.setUserChoice = "GAT Test Simulation";
+                      Get.toNamed(Routes.getGatTestSimulationPage());
+                    },
                   ),
                   CustomCard(
                     cardTitle: "Tests History",
                     builtInIcon: Icons.history,
                     press: () {
+                      homeController.setUserChoice = "Test History";
                       Get.toNamed(Routes.getTestHistoryPage());
                     },
                   ),

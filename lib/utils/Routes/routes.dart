@@ -1,4 +1,6 @@
+import 'package:gat_cs_trainer_app/pages/GATTestSimulationPage/gat_test_simulation_page.dart';
 import 'package:get/get.dart';
+import '../../pages/AdminPages/AdminMcqsDetailPage/admin_mcqs_detail_page.dart';
 import '../../pages/TestPage/test_page.dart';
 import '/controllers/signup_controller.dart';
 import '/pages/AddMcqsPage/add_mcqs_page.dart';
@@ -49,6 +51,8 @@ class Routes {
   static String notification = "/notification";
   static String subjects = "/subjects";
   static String subjectsselection = "/subjectsselection";
+  static String gattestsimulation = "/gattestsimulation";
+  static String adminmcqsdetail = "/adminmcqsdetail";
 
   static String getSubjectsSelection() => subjectsselection;
   static String getSplashPage() => splash;
@@ -69,11 +73,21 @@ class Routes {
   static String getSubCategoryPage() => subcategory;
   static String getTestPage() => test;
   static String getUsersDetailsPage() => usersdetails;
+  static String getGatTestSimulationPage() => gattestsimulation;
+  static String getAdminMcqsDetailPage() => adminmcqsdetail;
 
   static List<GetPage> routes = [
     GetPage(
+      name: adminmcqsdetail,
+      page: () => AdminMcqsDetailPage(),
+    ),
+    GetPage(
       page: () => TestHistoryPage(),
       name: testhistory,
+    ),
+    GetPage(
+      name: gattestsimulation,
+      page: () => GatTestSimulationPage(),
     ),
     GetPage(
       page: () => SubjectsSelectionPage(),

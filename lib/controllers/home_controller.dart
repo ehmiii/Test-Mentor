@@ -30,6 +30,9 @@ class HomeController extends GetxController {
   String _pickedImage = "";
   String _selectedCategory = "";
   String _errorMessage = "";
+  String _userChoice = ""; // Test or Preparation
+  String _userSelectedSubjectTitle =
+      ""; // Computer science or English saved user selected categories
   List<CategoryModel> _availableCategory = [];
   int _selectedLengthofQuiz = 0;
   McqsModel _mcqsModel = McqsModel(
@@ -54,6 +57,8 @@ class HomeController extends GetxController {
   TextEditingController get getUserNameController => _userNameController;
   UserAuthenticationModel get getUserData => _userData!;
   TextEditingController get getMcqsCommentController => _mcqsCommentController;
+  String get getUserChoice => _userChoice;
+  String get getUserSelectedSubjectTitle => _userSelectedSubjectTitle;
   // List<CategoryModel?>? get getRecentViewed => _recentViewed;
   bool get getQuestionErrorSelected => _questionErrorSelected;
   bool get getOptionErrorSelected => _optionErrorSelected;
@@ -76,6 +81,9 @@ class HomeController extends GetxController {
   set setIsLoading(bool value) => _isLoading = value;
   set setQuestionErrorSelected(bool value) => _questionErrorSelected = value;
   set setOptionErrorSelected(bool value) => _optionErrorSelected = value;
+  set setUserChoice(String value) => _userChoice = value;
+  set setUserSelectedSubjectTitle(String value) =>
+      _userSelectedSubjectTitle = value;
   Future<void> logoutUser() async {
     for (var key in _userInfoBox.keys) {
       _userInfoBox.delete(key);
@@ -135,6 +143,24 @@ class HomeController extends GetxController {
     }
   }
 
+  Future<void> deleteMcqsFromDataBase(McqsModel mcqs) async {
+    String url =
+        "https://testmentor-41a06-default-rtdb.firebaseio.com/approve/${mcqs.category}/${mcqs.userId}/${mcqs.id}.json?";
+    try {
+      setIsLoading = true;
+      update();
+      await http.delete(Uri.parse(url));
+      _specialistMcqs.removeWhere((element) => element.id == mcqs.id);
+      ShowToast.SHOW_TOAST("Successfully deleted");
+    } catch (e) {
+      ShowToast.SHOW_TOAST("Mcqs not deleted..");
+    } finally {
+      setIsLoading = false;
+      update();
+    }
+  }
+
+// Getting mcqs from database also getting notifications from database
   Future<void> getAvaliableCategoriesAndNotifications(
       {bool isGettingNotifications = false}) async {
     String categoryUrl =
@@ -145,8 +171,8 @@ class HomeController extends GetxController {
       url =
           "https://testmentor-41a06-default-rtdb.firebaseio.com/notifications/${_userInfo!.userId}.json?";
     }
-    _availableCategory = [];
     try {
+      _availableCategory = [];
       List<SubSubject> computerScience = [];
       List<SubSubject> english = [];
       setIsLoading = true;
@@ -220,8 +246,6 @@ class HomeController extends GetxController {
         ),
       ];
       print(_subjects_and_mcqs.length);
-      // _notifications.reversed;
-      // print(_notifications.length);
       setErrorMessage = "Done";
     } catch (error) {
       if (error.toString().contains("Failed host lookup")) {
@@ -316,7 +340,6 @@ class HomeController extends GetxController {
       setIsLoading = true;
       update();
       final response = await http.delete(Uri.parse(url));
-      print(response);
       _notifications.removeWhere((element) => element.id == deletedMcqs.id);
       ShowToast.SHOW_TOAST("Successfully deleted");
     } catch (error) {

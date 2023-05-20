@@ -33,6 +33,9 @@ class Constants {
   static String DARK_BACKGROUN_LOGO_SVG = "assets/images/ForDarkBackground.svg";
   static String LIGHT_BACKGROUN_LOGO_SVG =
       "assets/images/ForLightBackground.svg";
+  static String DARK_BACKGROUN_LOGO_GIF = "assets/images/ForDarkBackground.gif";
+  static String LIGHT_BACKGROUN_LOGO_GIF =
+      "assets/images/ForLightBackground.gif";
   // Image Icons path
   static String BACK_ICON = "assets/icons/back_icon.png";
   static String CLOSE_ICON = "assets/icons/close_icon.png";

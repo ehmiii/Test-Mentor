@@ -33,19 +33,19 @@ class McqsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar.CUSTOM_APPBAR(
-        context: context,
-        buttonText: "Start Test",
-        buttonPressFunction: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) =>
-                TestMcqsSelectionDialog.TEST_MCQS_SELECTION_DIALOG(context),
-            barrierDismissible: false,
-            barrierLabel: "Select Length of Mcqs",
-            barrierColor: Constants.DARK_BLUE_COLOR.withOpacity(.7),
-          );
-        },
-      ),
+          context: context,
+          buttonText: "Start Test",
+          buttonPressFunction: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) =>
+                  TestMcqsSelectionDialog.TEST_MCQS_SELECTION_DIALOG(context),
+              barrierDismissible: false,
+              barrierLabel: "Select Length of Mcqs",
+              barrierColor: Constants.DARK_BLUE_COLOR.withOpacity(.7),
+            );
+          },
+          title: Get.find<HomeController>().getMcqs[0].category),
       body: GetBuilder<HomeController>(builder: (homeController) {
         return Container(
           color: Constants.LIGHT_BLUE_COLOR,
@@ -85,6 +85,7 @@ class McqsPage extends StatelessWidget {
                 ),
                 child: Mcqs(
                   mcqs: homeController.getMcqs[index],
+                  index: index + 1,
                 ),
               );
             },

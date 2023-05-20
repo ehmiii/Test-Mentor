@@ -8,10 +8,8 @@ import '/utils/constants.dart';
 
 class Mcqs extends StatefulWidget {
   final McqsModel mcqs;
-  const Mcqs({
-    super.key,
-    required this.mcqs,
-  });
+  final int index;
+  const Mcqs({super.key, required this.mcqs, required this.index});
 
   @override
   State<Mcqs> createState() => _McqsState();
@@ -40,7 +38,7 @@ class _McqsState extends State<Mcqs> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          widget.mcqs.question,
+          "Q-${widget.index} ${widget.mcqs.question}",
           style: const TextStyle(
             fontSize: 18,
           ),

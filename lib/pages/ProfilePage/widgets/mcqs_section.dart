@@ -56,7 +56,7 @@ class McqsSection extends StatelessWidget {
                                         IconButton(
                                           onPressed: () async {
                                             await homeController
-                                                .deleteNotification(
+                                                .deleteMcqsFromDataBase(
                                                     homeController
                                                             .getSpecialistMcqs[
                                                         index]);

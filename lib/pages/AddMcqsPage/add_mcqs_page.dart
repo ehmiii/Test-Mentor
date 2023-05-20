@@ -86,6 +86,10 @@ class _AddMcqsPageState extends State<AddMcqsPage> {
                         validator: (value) {
                           if (value!.isEmpty) {
                             return "Please enter mcqs";
+                          } else if (addMcqsController
+                              .checkingQuestionDuplication()
+                              .contains(value)) {
+                            return "Given Mcqs exsist";
                           } else {
                             return null;
                           }
@@ -204,8 +208,16 @@ class _AddMcqsPageState extends State<AddMcqsPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           try {
+            if (addMcqsController.getRightAnswerController.text ==
+                    addMcqsController.getWrongAnswer1Controller.text ||
+                addMcqsController.getRightAnswerController.text ==
+                    addMcqsController.getWrongAnswer2Controller.text ||
+                addMcqsController.getRightAnswerController.text ==
+                    addMcqsController.getWrongAnswer3Controller.text) {
+              ShowToast.SHOW_TOAST(
+                  "Please note that. Mcqs Question correct answer should be unique");
+            }
             await addMcqsController.addMcqs();
-
             // ignore: empty_catches
           } catch (err) {}
         },

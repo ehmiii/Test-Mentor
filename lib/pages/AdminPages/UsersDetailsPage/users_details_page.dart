@@ -5,7 +5,8 @@ import '/controllers/admin_controller.dart';
 
 import '../../../utils/Routes/routes.dart';
 import '../../../utils/constants.dart';
-import 'addMcqs.dart';
+import 'add_mcqs.dart';
+import 'reported_mcqs.dart';
 
 class UsersDetailsPage extends StatelessWidget {
   AdminController adminController = Get.find<AdminController>();
@@ -82,7 +83,10 @@ class UsersDetailsPage extends StatelessWidget {
                     child: CircularProgressIndicator.adaptive(),
                   )
                 : RefreshIndicator(
-                    onRefresh: () => adminController.getUsersDetials(),
+                    onRefresh: () async {
+                      await adminController.reportNotifications();
+                      return adminController.getUsersDetials();
+                    },
                     child: adminController.getusers.isEmpty
                         ? Center(
                             child: Column(
@@ -106,9 +110,30 @@ class UsersDetailsPage extends StatelessWidget {
                           )
                         : Column(
                             children: [
-                              const SizedBox(
-                                height: 8,
-                              ),
+                              adminController.getReportNotification.isNotEmpty
+                                  ? ElevatedButton(
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) => Dialog(
+                                            backgroundColor:
+                                                Constants.LIGHT_BLUE_COLOR,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                            ),
+                                            child: ReportedMcqs(
+                                              mcqsList: adminController
+                                                  .getReportNotification,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: const Text("Reported Mcqs"),
+                                    )
+                                  : const SizedBox(
+                                      height: 8,
+                                    ),
                               ListView.builder(
                                 shrinkWrap: true,
                                 itemBuilder: (_, index) {
@@ -205,12 +230,26 @@ class UsersDetailsPage extends StatelessWidget {
                                               ? Padding(
                                                   padding:
                                                       const EdgeInsets.all(8.0),
-                                                  child: Text(
-                                                    "Admin",
-                                                    style: TextStyle(
-                                                      color: Constants
-                                                          .DARK_BLUE_COLOR,
-                                                      fontSize: 18,
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      Get.toNamed(
+                                                        Routes
+                                                            .getAdminMcqsDetailPage(),
+                                                      );
+                                                      if (adminController
+                                                          .getAdminMcqs
+                                                          .isEmpty) {
+                                                        adminController
+                                                            .getAdminMcqsFromDataBase();
+                                                      }
+                                                    },
+                                                    child: Text(
+                                                      "Admin",
+                                                      style: TextStyle(
+                                                        color: Constants
+                                                            .DARK_BLUE_COLOR,
+                                                        fontSize: 18,
+                                                      ),
                                                     ),
                                                   ),
                                                 )
@@ -218,7 +257,7 @@ class UsersDetailsPage extends StatelessWidget {
                                                   padding:
                                                       const EdgeInsets.all(8.0),
                                                   child: Text(
-                                                    "Mcqs",
+                                                    "Specialist",
                                                     style: TextStyle(
                                                       color: Constants
                                                           .DARK_BLUE_COLOR,
@@ -243,6 +282,7 @@ class UsersDetailsPage extends StatelessWidget {
         onPressed: () {
           showDialog(
             context: context,
+            barrierDismissible: false,
             builder: (BuildContext context) => Dialog(
               backgroundColor: Constants.LIGHT_BLUE_COLOR,
               shape: RoundedRectangleBorder(

@@ -60,14 +60,14 @@ class TestPage extends StatelessWidget {
                     child: Container(),
                   ),
                   SizedBox(
-                    height: constrains.maxHeight * .57,
+                    height: constrains.maxHeight * .60,
                     child: Stack(
                       children: [
                         Container(
                           padding: EdgeInsets.all(
                             constrains.maxWidth * .02,
                           ),
-                          height: constrains.maxHeight * .57,
+                          height: constrains.maxHeight * .60,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                             color: Constants.DARK_BLUE_COLOR.withOpacity(.7),
@@ -86,7 +86,7 @@ class TestPage extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(
-                                height: constrains.maxHeight * .02,
+                                height: constrains.maxHeight * .01,
                               ),
                               ListView.builder(
                                 shrinkWrap: true,
@@ -96,7 +96,7 @@ class TestPage extends StatelessWidget {
                                     children: [
                                       Container(
                                         margin: EdgeInsets.symmetric(
-                                          vertical: constrains.maxHeight * .013,
+                                          vertical: constrains.maxHeight * .010,
                                         ),
                                         height: constrains.maxHeight * .11,
                                         alignment: Alignment.center,
@@ -247,12 +247,19 @@ class TestPage extends StatelessWidget {
                     buttonText: "Skip",
                     constrains: constrains,
                     press: () {
-                      testController.setUserTestMcqs(
-                        userMcqs: testController.getSelectedMcqs[
-                            testController.getCurrentMcqsIndex],
-                        userEnteredAnswer: "Skipped",
-                      );
                       if (testController.getIsTestStart) {
+                        testController.setUserTestMcqs(
+                          userMcqs: testController.getSelectedMcqs[
+                              testController.getCurrentMcqsIndex],
+                          userEnteredAnswer: "Skipped",
+                        );
+
+                        if (testController.getSelectedMcqs.length ==
+                            testController.getCurrentMcqsIndex + 1) {
+                          print(testController.getSelectedMcqs.length);
+                          print(testController.getCurrentMcqsIndex);
+                          Get.toNamed(Routes.getResultPage());
+                        }
                         testController.nextQuestion();
                         testController.setSkippedMcqs =
                             testController.getSkippedMcqs + 1;

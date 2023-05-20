@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
-import '/controllers/add_mcqs_controller.dart';
-import '/controllers/admin_controller.dart';
-import '/utils/widgets/category_selection_dialog.dart';
 
+import '../../../models/mcqs_model.dart';
+import '/controllers/admin_controller.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/data/categories_names.dart';
 
 class AddMcqsByAdmin extends StatelessWidget {
-  const AddMcqsByAdmin({super.key});
+  McqsModel? mcqs;
+  AddMcqsByAdmin({super.key, this.mcqs});
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +24,7 @@ class AddMcqsByAdmin extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextFormField(
+                  // keyboardType: TextInputType.none,
                   minLines: 4,
                   maxLines: 8,
                   controller: addMcqsController.getQuestionController,
@@ -73,6 +72,8 @@ class AddMcqsByAdmin extends StatelessWidget {
                       ),
                       child: TextFormField(
                         cursorHeight: 20,
+                        // keyboardType:
+                        // TextInputType.none, // Delete it after some time
                         validator: (value) {
                           if (value!.isEmpty) {
                             return "Please fill the option";
@@ -164,13 +165,41 @@ class AddMcqsByAdmin extends StatelessWidget {
                     //   ),
                     // ),
                     ),
-                ElevatedButton(
-                  onPressed: () {
-                    addMcqsController.addMcqs();
-                  },
-                  child: const Text(
-                    "Add Mcqs",
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    addMcqsController.getIsLoading
+                        ? const Center(
+                            child: CircularProgressIndicator.adaptive(),
+                          )
+                        : addMcqsController.getIsAddedButtonClicked
+                            ? const Center(
+                                child: CircularProgressIndicator.adaptive(),
+                              )
+                            : ElevatedButton(
+                                onPressed: () async {
+                                  addMcqsController.setIsAddedButtonClicked =
+                                      true;
+                                  mcqs != null
+                                      ? await addMcqsController.addMcqs(
+                                          mcqsModel: mcqs)
+                                      : await addMcqsController.addMcqs();
+                                  addMcqsController.setIsAddedButtonClicked =
+                                      false;
+                                },
+                                child: Text(
+                                  mcqs != null ? "Update Mcqs" : "Add Mcqs",
+                                ),
+                              ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      child: const Text(
+                        "Close",
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

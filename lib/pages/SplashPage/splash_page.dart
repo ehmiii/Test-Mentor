@@ -27,7 +27,7 @@ class _SplashPageState extends State<SplashPage> {
 
   Future<void> gotoNextScreen() async {
     try {
-      Future.delayed(Duration(seconds: 10));
+      // Future.delayed(Duration(seconds: 10));
       await Get.find<SplashController>().tryAutoLogin()
           ? Get.find<SplashController>().getIsAdmin
               ? Get.offAllNamed(

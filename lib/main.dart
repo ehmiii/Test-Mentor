@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        FocusManager.instance.primaryFocus?.unfocus();
+        // FocusManager.instance.primaryFocus?.unfocus();
       },
       child: GetMaterialApp(
         // initialBinding: SignUpBinding(),
