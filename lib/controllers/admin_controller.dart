@@ -20,6 +20,7 @@ class AdminController extends GetxController {
   final _wrongAnswer3Controller = TextEditingController();
   final _rightAnswerController = TextEditingController();
   final _rejectionMessage = TextEditingController();
+  final _searchConroller = TextEditingController();
   final _textFormGlobalKey = GlobalKey<FormState>();
   List<String> _questions = [];
 
@@ -33,9 +34,14 @@ class AdminController extends GetxController {
   List<McqsModel> _reportNotification = [];
   List<McqsModel> _adminMcqs = [];
   bool _isAddedButtonClicked = false;
+  List<McqsModel> _adminFoundMcqs = [];
+  bool _isSearching = false;
 
   bool get getIsAddedButtonClicked => _isAddedButtonClicked;
+  bool get getIsSearching => _isSearching;
   TextEditingController get getQuestionController => _questionController;
+  TextEditingController get getSearchController => _searchConroller;
+  List<McqsModel> get getAdminFoundMcqs => _adminFoundMcqs;
   TextEditingController get getWrongAnswer1Controller =>
       _wrongAnswer1Controller;
   TextEditingController get getWrongAnswer2Controller =>
@@ -62,6 +68,11 @@ class AdminController extends GetxController {
     update();
   }
 
+  set setIsSearching(bool value) {
+    _isSearching = value;
+    update();
+  }
+
   Future<void> checkingQuestionDuplication() async {
     String url =
         "https://testmentor-41a06-default-rtdb.firebaseio.com/approve/$_selectedSpecilization.json?";
@@ -81,6 +92,24 @@ class AdminController extends GetxController {
         });
       });
     } finally {}
+  }
+
+  Future<void> searchMcqsByQuestion(String question) async {
+    _adminFoundMcqs = [];
+    _adminFoundMcqs.addAll(
+      _adminMcqs.where(
+        (element) => element.question.toLowerCase().contains(
+              question.toLowerCase(),
+            ),
+      ),
+    );
+    print(_adminFoundMcqs.length);
+    if (_searchConroller.text.isEmpty) {
+      _adminFoundMcqs = _adminMcqs;
+      update();
+    } else {
+      update();
+    }
   }
 
   Future<void> getAdminMcqsFromDataBase() async {
@@ -107,6 +136,7 @@ class AdminController extends GetxController {
           }
         });
       });
+      _adminFoundMcqs = _adminMcqs;
     } catch (e) {
       ShowToast.SHOW_TOAST("An error occurred please try again");
     } finally {
@@ -148,7 +178,11 @@ class AdminController extends GetxController {
           return;
         }
         if (mcqsModel == null) {
-          await checkingQuestionDuplication();
+          if (_questions.isEmpty) {
+            await checkingQuestionDuplication();
+          } else {
+            _questions.add(_questionController.text);
+          }
           if (_questions.contains(_questionController.text)) {
             ShowToast.SHOW_TOAST("Question already uploaded");
             return;

@@ -28,91 +28,98 @@ class NotificationPage extends StatelessWidget {
               ? const Center(
                   child: CircularProgressIndicator.adaptive(),
                 )
-              : ListView.builder(
-                  itemCount: homeController.getNotifications.length,
-                  physics: const BouncingScrollPhysics(),
-                  itemBuilder: (_, index) {
-                    return Slidable(
-                      // direction: Axis.horizontal,
-                      // enabled: true,
-                      endActionPane: ActionPane(
-                        extentRatio: .15,
-                        motion: const ScrollMotion(),
-                        children: [
-                          IconButton(
-                            onPressed: () async {
-                              await homeController.deleteNotification(
-                                  homeController.getNotifications[index]);
-                            },
-                            icon: const Icon(
-                              Icons.delete,
-                              size: 40,
-                              color: Colors.red,
-                            ),
-                          ),
-                        ],
-                      ),
-                      child: Card(
-                          color: Constants.DARK_BLUE_COLOR,
-                          child: ExpansionTileTheme(
-                            data: ExpansionTileThemeData(
-                              iconColor: Constants.LIGHT_BLUE_COLOR,
-                              collapsedIconColor: Constants.LIGHT_BLUE_COLOR,
-                              collapsedTextColor: Constants.LIGHT_BLUE_COLOR,
-                              textColor: Constants.LIGHT_BLUE_COLOR,
-                            ),
-                            child: ExpansionTile(
-                              title: Text(
-                                homeController.getNotifications[index]
-                                        .rejectionMessage ??
-                                    "Message not found",
-                              ),
-                              leading: IconButton(
-                                icon: const Icon(
-                                  Icons.edit,
-                                ),
-                                onPressed: () {
-                                  Get.offAndToNamed(
-                                    Routes.getAddMcqsPage(),
-                                    arguments: [
-                                      homeController.getNotifications[index],
-                                      true
-                                    ],
-                                  );
+              : homeController.getNotifications.isEmpty
+                  ? const Center(
+                      child: Text("No new notifications at the moment"),
+                    )
+                  : ListView.builder(
+                      itemCount: homeController.getNotifications.length,
+                      physics: const BouncingScrollPhysics(),
+                      itemBuilder: (_, index) {
+                        return Slidable(
+                          // direction: Axis.horizontal,
+                          // enabled: true,
+                          endActionPane: ActionPane(
+                            extentRatio: .15,
+                            motion: const ScrollMotion(),
+                            children: [
+                              IconButton(
+                                onPressed: () async {
+                                  await homeController.deleteNotification(
+                                      homeController.getNotifications[index]);
                                 },
+                                icon: const Icon(
+                                  Icons.delete,
+                                  size: 40,
+                                  color: Colors.red,
+                                ),
                               ),
-                              expandedCrossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Subject: ${homeController.getNotifications[index].category}",
-                                  style: TextStyle(
-                                    color: Constants.LIGHT_BLUE_COLOR,
-                                  ),
-                                ),
-                                Text(
-                                  "Question: ${homeController.getNotifications[index].question}",
-                                  style: TextStyle(
-                                    color: Constants.LIGHT_BLUE_COLOR,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                          // child: ListTile(
-                          //   leading: IconButton(
-                          //     onPressed: () {},
-                          //     icon: Icon(
-                          //       Icons.edit,
-                          //       color: Constants.DARK_BLUE_COLOR,
-                          //     ),
-                          //   ),
-                          //   title: ,
-                          // ),
+                            ],
                           ),
+                          child: Card(
+                              color: Constants.DARK_BLUE_COLOR,
+                              child: ExpansionTileTheme(
+                                data: ExpansionTileThemeData(
+                                  iconColor: Constants.LIGHT_BLUE_COLOR,
+                                  collapsedIconColor:
+                                      Constants.LIGHT_BLUE_COLOR,
+                                  collapsedTextColor:
+                                      Constants.LIGHT_BLUE_COLOR,
+                                  textColor: Constants.LIGHT_BLUE_COLOR,
+                                ),
+                                child: ExpansionTile(
+                                  title: Text(
+                                    homeController.getNotifications[index]
+                                            .rejectionMessage ??
+                                        "Message not found",
+                                  ),
+                                  leading: IconButton(
+                                    icon: const Icon(
+                                      Icons.edit,
+                                    ),
+                                    onPressed: () {
+                                      Get.offAndToNamed(
+                                        Routes.getAddMcqsPage(),
+                                        arguments: [
+                                          homeController
+                                              .getNotifications[index],
+                                          true
+                                        ],
+                                      );
+                                    },
+                                  ),
+                                  expandedCrossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Subject: ${homeController.getNotifications[index].category}",
+                                      style: TextStyle(
+                                        color: Constants.LIGHT_BLUE_COLOR,
+                                      ),
+                                    ),
+                                    Text(
+                                      "Question: ${homeController.getNotifications[index].question}",
+                                      style: TextStyle(
+                                        color: Constants.LIGHT_BLUE_COLOR,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                              // child: ListTile(
+                              //   leading: IconButton(
+                              //     onPressed: () {},
+                              //     icon: Icon(
+                              //       Icons.edit,
+                              //       color: Constants.DARK_BLUE_COLOR,
+                              //     ),
+                              //   ),
+                              //   title: ,
+                              // ),
+                              ),
+                        );
+                      },
                     );
-                  },
-                );
         },
       ),
     );

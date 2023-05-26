@@ -80,7 +80,7 @@ class InitialPage extends StatelessWidget {
                             ),
                             TextSpan(
                               text:
-                                  " If you have IT skills and want to contribute, click on Specialist.",
+                                  " If you have IT skills and want to contribute in Mcqs, click on Specialist.",
                             ),
                             TextSpan(
                               text: "\nStudent: ",

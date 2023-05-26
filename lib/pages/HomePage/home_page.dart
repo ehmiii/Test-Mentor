@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
@@ -65,138 +66,209 @@ class HomePage extends StatelessWidget {
                           ),
                   ],
                 ),
-                leadingButtonPressFunction: () {
-                  _advancedDrawerController.showDrawer();
-                },
-                leadingButtonIcon: Icons.menu,
+                leadingButtonImage: Constants.HU_LOGO,
+                leadingButtonPressFunction: homeController.getUserInfo != null
+                    ? () {
+                        _advancedDrawerController.showDrawer();
+                      }
+                    : () {},
+                leadingButtonIcon:
+                    homeController.getUserInfo != null ? Icons.menu : null,
               ),
               // drawer: const Drawer(),
               backgroundColor: Constants.LIGHT_BLUE_COLOR,
-              body: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Flexible(flex: 1, child: Container()),
-                  Get.find<HomeController>().getUserInfo == null
-                      ? const SizedBox()
-                      : ElevatedButton(
-                          onPressed: () {
-                            Get.toNamed(
-                              Routes.getAddMcqsPage(),
-                            );
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text(
-                              "Add Mcqs",
-                              style: TextStyle(
-                                color: Constants.LIGHT_BLUE_COLOR,
-                                fontSize: 20,
+              body: homeController.getIsLoading
+                  ? const Center(
+                      child: CircularProgressIndicator.adaptive(),
+                    )
+                  : homeController.getSubjectsMcqs.isEmpty
+                      ? Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ElevatedButton(
+                                child: const Text("Refresh"),
+                                onPressed: () async {
+                                  await homeController
+                                      .getAvaliableCategoriesAndNotifications();
+                                  if (homeController.getUserData != null) {
+                                    await homeController
+                                        .getAvaliableCategoriesAndNotifications(
+                                            isGettingNotifications: true);
+                                  }
+                                },
                               ),
-                            ),
+                              const Text(
+                                  "No mcqs Founded click refresh button again")
+                            ],
                           ),
-                        ),
-                  Get.find<HomeController>().getUserInfo == null
-                      ? const SizedBox()
-                      : Flexible(flex: 1, child: Container()),
-
-                  // Container(
-                  //   height: 100,
-                  //   width: 100,
-                  //   constraints: BoxConstraints(
-                  //     maxHeight: 100,
-                  //     maxWidth: 100,
-                  //     minHeight: 100,
-                  //     minWidth: 100,
-                  //   ),
-                  //   decoration: BoxDecoration(
-                  //     shape: BoxShape.circle,
-                  //   ),
-                  //   child: ClipOval(
-                  //     child: CachedNetworkImage(
-                  //       imageUrl: homeController.getUserInfo!.profileImageUrl,
-                  //       fit: BoxFit.cover,
-                  //     ),
-                  //   ),
-                  // ),
-                  CustomCard(
-                    cardTitle: "Preparation Mode",
-                    icon: Constants.PREPARATION_MODE_ICON,
-                    press: () async {
-                      homeController.setUserChoice = "Preparation";
-                      Get.toNamed(Routes.getSubjectsSelection());
-                      // if (homeController.errorMessage == "Done") {
-                      // homeController.setUserChoice = "Preparation";
-                      // } else {
-                      //   ShowToast.SHOW_TOAST(homeController.errorMessage == ""
-                      //       ? "Apologies for the error on your side. Please refresh or restart and contact support if the issue persists. Thank you."
-                      //       : homeController.errorMessage);
-                      //   if (homeController.getMcqs.isEmpty) {
-                      //     await homeController
-                      //         .getAvaliableCategoriesAndNotifications();
-                      //   }
-                      // }
-                    },
-                  ),
-                  CustomCard(
-                    cardTitle: "Subject Wise Test Mode",
-                    icon: Constants.TESS_MODE_ICON,
-                    press: () {
-                      if (homeController.getMcqs.isEmpty) {
-                        homeController.getAvaliableCategoriesAndNotifications();
-                      }
-                      homeController.setUserChoice = "Test";
-                      Get.toNamed(Routes.getSubjectsSelection());
-                    },
-                  ),
-                  CustomCard(
-                    cardTitle: "GAT Test Mode",
-                    icon: Constants.TESS_MODE_ICON,
-                    press: () {
-                      homeController.setUserChoice = "GAT Test Simulation";
-                      Get.toNamed(Routes.getGatTestSimulationPage());
-                    },
-                  ),
-                  CustomCard(
-                    cardTitle: "Tests History",
-                    builtInIcon: Icons.history,
-                    press: () {
-                      homeController.setUserChoice = "Test History";
-                      Get.toNamed(Routes.getTestHistoryPage());
-                    },
-                  ),
-                  Flexible(
-                    flex: 3,
-                    child: Container(),
-                  ),
-                  homeController.getUserInfo == null
-                      ? Row(
+                        )
+                      : Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text(
-                              "Specialist?",
-                              style: TextStyle(
-                                  // color: Constants.DARK_BLUE_COLOR,
+                            Flexible(
+                                flex:
+                                    homeController.getUserInfo == null ? 3 : 1,
+                                child: Container()),
+                            homeController.getUserInfo == null
+                                ? const SizedBox()
+                                : ElevatedButton(
+                                    onPressed: () {
+                                      Get.toNamed(
+                                        Routes.getAddMcqsPage(),
+                                      );
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Text(
+                                        "Add Mcqs",
+                                        style: TextStyle(
+                                          color: Constants.LIGHT_BLUE_COLOR,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                Get.offAllNamed(
-                                  Routes.getSignInPage(),
-                                );
+                            Get.find<HomeController>().getUserInfo == null
+                                ? const SizedBox()
+                                : Flexible(flex: 1, child: Container()),
+
+                            // Container(
+                            //   height: 100,
+                            //   width: 100,
+                            //   constraints: BoxConstraints(
+                            //     maxHeight: 100,
+                            //     maxWidth: 100,
+                            //     minHeight: 100,
+                            //     minWidth: 100,
+                            //   ),
+                            //   decoration: BoxDecoration(
+                            //     shape: BoxShape.circle,
+                            //   ),
+                            //   child: ClipOval(
+                            //     child: CachedNetworkImage(
+                            //       imageUrl: homeController.getUserInfo!.profileImageUrl,
+                            //       fit: BoxFit.cover,
+                            //     ),
+                            //   ),
+                            // ),
+                            CustomCard(
+                              cardTitle: "Test Preparation Area",
+                              icon: Constants.PREPARATION_MODE_ICON,
+                              press: () async {
+                                homeController.setUserChoice = "Preparation";
+                                Get.toNamed(Routes.getSubjectsSelection());
+                                // if (homeController.errorMessage == "Done") {
+                                // homeController.setUserChoice = "Preparation";
+                                // } else {
+                                //   ShowToast.SHOW_TOAST(homeController.errorMessage == ""
+                                //       ? "Apologies for the error on your side. Please refresh or restart and contact support if the issue persists. Thank you."
+                                //       : homeController.errorMessage);
+                                //   if (homeController.getMcqs.isEmpty) {
+                                //     await homeController
+                                //         .getAvaliableCategoriesAndNotifications();
+                                //   }
+                                // }
                               },
-                              child: const Text(
-                                "SignIn",
-                                style: TextStyle(
-                                  decoration: TextDecoration.underline,
-                                  fontSize: 18,
-                                ),
-                              ),
-                            )
+                            ),
+                            CustomCard(
+                              cardTitle: "Subject-wise Quiz Area",
+                              icon: Constants.TESS_MODE_ICON,
+                              press: () {
+                                if (homeController.getMcqs.isEmpty) {
+                                  homeController
+                                      .getAvaliableCategoriesAndNotifications();
+                                }
+                                homeController.setUserChoice = "Test";
+                                Get.toNamed(Routes.getSubjectsSelection());
+                              },
+                            ),
+                            CustomCard(
+                              cardTitle: "GAT Test Simulation",
+                              icon: Constants.TESS_MODE_ICON,
+                              press: () {
+                                homeController.setUserChoice = "GATTest";
+                                Get.toNamed(Routes.getGatTestSimulationPage());
+                              },
+                            ),
+                            CustomCard(
+                              cardTitle: "View Test History",
+                              builtInIcon: Icons.history,
+                              press: () {
+                                homeController.setUserChoice = "Test History";
+                                Get.toNamed(Routes.getTestHistoryPage());
+                              },
+                            ),
+                            CustomCard(
+                              cardTitle: "About Us",
+                              builtInIcon: Icons.info,
+                              press: () {
+                                AwesomeDialog(
+                                  context: context,
+                                  dialogType: DialogType.info,
+                                  headerAnimationLoop: false,
+                                  barrierColor:
+                                      Constants.BLUE_COLOR.withOpacity(.7),
+                                  dialogBackgroundColor:
+                                      Constants.DARK_BLUE_COLOR,
+                                  customHeader: Image.asset(
+                                    Constants.HU_LOGO,
+                                    fit: BoxFit.fill,
+                                  ),
+                                  title: "About us",
+                                  body: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      "GAT(CS) Trainer: Developed by Hazara University students Ahmad Khan and Hamza Sher, our app offers comprehensive preparation for the Graduate Assessment Test (Computer Science). Access practice questions, study materials, and mock exams to excel in the GAT(CS). Free to download and user-friendly, we're here to support your academic success.",
+                                      textAlign: TextAlign.justify,
+                                      style: TextStyle(
+                                        color: Constants.LIGHT_BLUE_COLOR,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                  ),
+                                  btnCancelOnPress: () {
+                                    Get.back();
+                                  },
+                                  autoDismiss: false,
+                                  onDismissCallback: (value) {},
+                                ).show();
+                              },
+                            ),
+                            Flexible(
+                              flex: 3,
+                              child: Container(),
+                            ),
+                            homeController.getUserInfo == null
+                                ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Text(
+                                        "Specialist?",
+                                        style: TextStyle(
+                                            // color: Constants.DARK_BLUE_COLOR,
+                                            ),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          Get.offAllNamed(
+                                            Routes.getSignInPage(),
+                                          );
+                                        },
+                                        child: const Text(
+                                          "SignIn",
+                                          style: TextStyle(
+                                            decoration:
+                                                TextDecoration.underline,
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  )
+                                : const SizedBox()
                           ],
-                        )
-                      : const SizedBox()
-                ],
-              ),
+                        ),
               floatingActionButton:
                   Get.find<HomeController>().getUserInfo == null
                       ? null

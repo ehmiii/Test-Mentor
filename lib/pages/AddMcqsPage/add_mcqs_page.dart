@@ -54,7 +54,18 @@ class _AddMcqsPageState extends State<AddMcqsPage> {
                       ),
                     ),
                     onPressed: () async {
-                      await addMcqsController.addMcqs();
+                      if (addMcqsController.getRightAnswerController.text == addMcqsController.getWrongAnswer1Controller.text ||
+                          addMcqsController.getRightAnswerController.text ==
+                              addMcqsController
+                                  .getWrongAnswer2Controller.text ||
+                          addMcqsController.getRightAnswerController.text ==
+                              addMcqsController
+                                  .getWrongAnswer3Controller.text) {
+                        ShowToast.SHOW_TOAST(
+                            "Please note that. Mcqs Question correct answer should be unique");
+                      } else {
+                        await addMcqsController.addMcqs();
+                      }
                     },
                   ),
           ),
@@ -216,8 +227,9 @@ class _AddMcqsPageState extends State<AddMcqsPage> {
                     addMcqsController.getWrongAnswer3Controller.text) {
               ShowToast.SHOW_TOAST(
                   "Please note that. Mcqs Question correct answer should be unique");
+            } else {
+              await addMcqsController.addMcqs();
             }
-            await addMcqsController.addMcqs();
             // ignore: empty_catches
           } catch (err) {}
         },

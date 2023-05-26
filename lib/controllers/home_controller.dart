@@ -55,7 +55,7 @@ class HomeController extends GetxController {
   UserInformationModel? get getUserInfo => _userInfo;
   List<SubjectsModel> get getSubjectsMcqs => _subjects_and_mcqs;
   TextEditingController get getUserNameController => _userNameController;
-  UserAuthenticationModel get getUserData => _userData!;
+  UserAuthenticationModel? get getUserData => _userData;
   TextEditingController get getMcqsCommentController => _mcqsCommentController;
   String get getUserChoice => _userChoice;
   String get getUserSelectedSubjectTitle => _userSelectedSubjectTitle;
@@ -149,7 +149,8 @@ class HomeController extends GetxController {
     try {
       setIsLoading = true;
       update();
-      await http.delete(Uri.parse(url));
+      final respons = await http.delete(Uri.parse(url));
+      print(json.decode(respons.body));
       _specialistMcqs.removeWhere((element) => element.id == mcqs.id);
       ShowToast.SHOW_TOAST("Successfully deleted");
     } catch (e) {

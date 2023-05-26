@@ -16,6 +16,7 @@ class CustomAppBar {
     IconData? leadingButtonIcon,
     bool isLeadingBack = true,
     String? leadingButtonText,
+    String? leadingButtonImage,
   }) {
     return AppBar(
       leading: isLeadingBack || leadingButtonText != null
@@ -80,9 +81,13 @@ class CustomAppBar {
                                   ),
                                 ),
                               )
-                            : Image.asset(
-                                Constants.BACK_ICON,
-                              ),
+                            : leadingButtonImage != null
+                                ? Image.asset(
+                                    leadingButtonImage,
+                                  )
+                                : Image.asset(
+                                    Constants.BACK_ICON,
+                                  ),
                   ),
                 ),
               ),

@@ -20,7 +20,7 @@ class TestPage extends StatelessWidget {
         return Scaffold(
           appBar: CustomAppBar.CUSTOM_APPBAR(
             context: context,
-            leadingButtonText: testController.getIsTestStart ? "Stop" : "Start",
+            leadingButtonText: testController.getIsTestStart ? "Stop" : null,
             leadingButtonPressFunction: () {
               if (testController.getIsTestStart) {
                 testController.setSkippedMcqs =
@@ -31,12 +31,13 @@ class TestPage extends StatelessWidget {
                 testController.getTimer!.cancel();
                 Get.toNamed(Routes.getResultPage());
               } else {
-                testController.setIsTestStart = true;
-                testController.update();
-                testController.testTimer();
+                // testController.setIsTestStart = true;
+                // testController.update();
+                // testController.testTimer();
+                Get.back();
               }
             },
-            buttonText: Constants.FORMATE_TIME(testController.getTotalTime),
+            buttonText: testController.getRemainingTime,
             buttonPressFunction: () {},
             title: "Quiz",
           ),
@@ -46,24 +47,24 @@ class TestPage extends StatelessWidget {
               padding: EdgeInsets.all(
                 constrains.maxWidth * .03,
               ),
-              child: Column(
+              child: Stack(
                 children: [
-                  Text(
-                    "Total Mcqs: ${testController.getSelectedMcqs.length}",
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Constants.DARK_BLACK_COLOR,
-                    ),
-                  ),
-                  Flexible(
-                    flex: 1,
-                    child: Container(),
-                  ),
-                  SizedBox(
-                    height: constrains.maxHeight * .60,
-                    child: Stack(
-                      children: [
-                        Container(
+                  Column(
+                    children: [
+                      Text(
+                        "Total Mcqs: ${testController.getSelectedMcqs.length}",
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Constants.DARK_BLACK_COLOR,
+                        ),
+                      ),
+                      Flexible(
+                        flex: 1,
+                        child: Container(),
+                      ),
+                      SizedBox(
+                        height: constrains.maxHeight * .60,
+                        child: Container(
                           padding: EdgeInsets.all(
                             constrains.maxWidth * .02,
                           ),
@@ -81,7 +82,7 @@ class TestPage extends StatelessWidget {
                                     .question,
                                 maxLines: 3,
                                 style: TextStyle(
-                                  color: Constants.DARK_BLACK_COLOR,
+                                  color: Constants.LIGHT_BLUE_COLOR,
                                   fontSize: 20,
                                 ),
                               ),
@@ -187,6 +188,25 @@ class TestPage extends StatelessWidget {
                                           ),
                                         ),
                                       ),
+                                      testController.getIsTestStart
+                                          ? const SizedBox()
+                                          : Container(
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    15,
+                                                  ),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      blurRadius: 5,
+                                                      blurStyle:
+                                                          BlurStyle.inner,
+                                                      color: Constants
+                                                          .LIGHT_BLUE_COLOR
+                                                          .withOpacity(.9),
+                                                    ),
+                                                  ]),
+                                            ),
                                     ],
                                   ),
                                 ),
@@ -196,112 +216,150 @@ class TestPage extends StatelessWidget {
                             ],
                           ),
                         ),
-                        testController.getIsTestStart
-                            ? const SizedBox()
-                            : Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(
-                                      15,
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        blurRadius: 5,
-                                        blurStyle: BlurStyle.inner,
-                                        color: Constants.LIGHT_BLUE_COLOR
-                                            .withOpacity(.9),
-                                      ),
-                                    ]),
-                              ),
-                      ],
-                    ),
-                  ),
-                  Flexible(
-                    flex: 1,
-                    child: Container(),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Current Mcqs: ${testController.getCurrentMcqsIndex + 1}",
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Constants.DARK_BLACK_COLOR,
-                        ),
                       ),
-                      Text(
-                        "Left Mcqs: ${testController.getSelectedMcqs.length - 1 - testController.getCurrentMcqsIndex}",
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Constants.DARK_BLACK_COLOR,
+                      Flexible(
+                        flex: 1,
+                        child: Container(),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Current Mcqs: ${testController.getCurrentMcqsIndex + 1}",
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Constants.DARK_BLACK_COLOR,
+                            ),
+                          ),
+                          Text(
+                            "Left Mcqs: ${testController.getSelectedMcqs.length - 1 - testController.getCurrentMcqsIndex}",
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Constants.DARK_BLACK_COLOR,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Flexible(
+                        flex: 1,
+                        child: Container(),
+                      ),
+                      CustomButton(
+                        icon: Constants.SKIP_ICON,
+                        buttonText: "Skip",
+                        constrains: constrains,
+                        press: () {
+                          if (testController.getIsTestStart) {
+                            testController.setUserTestMcqs(
+                              userMcqs: testController.getSelectedMcqs[
+                                  testController.getCurrentMcqsIndex],
+                              userEnteredAnswer: "Skipped",
+                            );
+
+                            if (testController.getSelectedMcqs.length ==
+                                testController.getCurrentMcqsIndex + 1) {
+                              print(testController.getSelectedMcqs.length);
+                              print(testController.getCurrentMcqsIndex);
+                              Get.toNamed(Routes.getResultPage());
+                            }
+                            testController.nextQuestion();
+                            testController.setSkippedMcqs =
+                                testController.getSkippedMcqs + 1;
+                          }
+                        },
+                      ),
+                      Flexible(
+                        flex: 1,
+                        child: Container(),
+                      ),
+                      Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.symmetric(
+                            horizontal: constrains.maxWidth * .02),
+                        height: constrains.maxHeight * .1,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(
+                            8,
+                          ),
+                          gradient: LinearGradient(
+                            colors: [
+                              Constants.BLUE_COLOR,
+                              Constants.LIGHT_BLUE_COLOR,
+                            ],
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Constants.DARK_BLACK_COLOR.withOpacity(.5),
+                              offset: const Offset(
+                                3,
+                                3,
+                              ),
+                              blurRadius: 4,
+                            ),
+                          ],
                         ),
+                        child: TimeDownCounter(),
+                      ),
+                      Flexible(
+                        flex: 1,
+                        child: Container(),
                       ),
                     ],
                   ),
-                  Flexible(
-                    flex: 1,
-                    child: Container(),
-                  ),
-                  CustomButton(
-                    icon: Constants.SKIP_ICON,
-                    buttonText: "Skip",
-                    constrains: constrains,
-                    press: () {
-                      if (testController.getIsTestStart) {
-                        testController.setUserTestMcqs(
-                          userMcqs: testController.getSelectedMcqs[
-                              testController.getCurrentMcqsIndex],
-                          userEnteredAnswer: "Skipped",
-                        );
-
-                        if (testController.getSelectedMcqs.length ==
-                            testController.getCurrentMcqsIndex + 1) {
-                          print(testController.getSelectedMcqs.length);
-                          print(testController.getCurrentMcqsIndex);
-                          Get.toNamed(Routes.getResultPage());
-                        }
-                        testController.nextQuestion();
-                        testController.setSkippedMcqs =
-                            testController.getSkippedMcqs + 1;
-                      }
-                    },
-                  ),
-                  Flexible(
-                    flex: 1,
-                    child: Container(),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.symmetric(
-                        horizontal: constrains.maxWidth * .02),
-                    height: constrains.maxHeight * .1,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(
-                        8,
-                      ),
-                      gradient: LinearGradient(
-                        colors: [
-                          Constants.BLUE_COLOR,
-                          Constants.LIGHT_BLUE_COLOR,
-                        ],
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Constants.DARK_BLACK_COLOR.withOpacity(.5),
-                          offset: const Offset(
-                            3,
-                            3,
+                  testController.getIsTestStart
+                      ? const SizedBox()
+                      : Container(
+                          width: double.infinity,
+                          color: Constants.LIGHT_BLUE_COLOR.withOpacity(.95),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text.rich(
+                                TextSpan(
+                                  children: [
+                                    const TextSpan(
+                                      text:
+                                          "Please carefully read the message: ",
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                    TextSpan(
+                                      text:
+                                          "When you click on the option below question, whether intentionally or unintentionally, next question will be displayed, and the selected option will be considered your answer. If the allotted time elapses, the test will be automatically closed, and you will be redirected to the result page.\nThe quiz comprises ${testController.getSelectedMcqs.length} Mcqs focused on the ${testController.getSelectedMcqs[0].category}.",
+                                      // style: TextStyle(color: Colors.red),
+                                    ),
+                                    const TextSpan(
+                                      text:
+                                          "\nTo initiate the test, kindly click on the 'START' button.",
+                                      style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                textAlign: TextAlign.justify,
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                ),
+                              ),
+                              // Text(
+                              //   "Please carefully read the message: When you click on the option inside the circle, whether intentionally or unintentionally, the question will be displayed, and the selected option will be considered your answer. If the allotted time elapses, the test will be automatically closed, and you will be redirected to the result page. To initiate the test, kindly click on the 'Start' button.",
+                              //   textAlign: TextAlign.justify,
+                              //   style: TextStyle(
+                              //     fontSize: 18,
+                              //   ),
+                              // ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  testController.setIsTestStart = true;
+                                  testController.update();
+                                  testController.testTimer();
+                                },
+                                child: const Text("START"),
+                              ),
+                            ],
                           ),
-                          blurRadius: 4,
-                        ),
-                      ],
-                    ),
-                    child: TimeDownCounter(),
-                  ),
-                  Flexible(
-                    flex: 1,
-                    child: Container(),
-                  ),
+                        )
                 ],
               ),
             ),

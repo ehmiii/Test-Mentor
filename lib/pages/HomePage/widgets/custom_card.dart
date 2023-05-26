@@ -19,35 +19,39 @@ class CustomCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Constants.DARK_BLUE_COLOR,
-      child: ListTile(
-        onTap: press,
-        title: Text(
-          cardTitle,
-          style: TextStyle(
-            color: Constants.LIGHT_BLUE_COLOR,
-            fontSize: 20,
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 30),
+      child: Card(
+        color: Constants.DARK_BLUE_COLOR,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        child: ListTile(
+          onTap: press,
+          title: Text(
+            cardTitle,
+            style: TextStyle(
+              color: Constants.LIGHT_BLUE_COLOR,
+              fontSize: 20,
+            ),
           ),
-        ),
-        trailing: Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: 8.0,
-          ),
-          child: builtInIcon != null
-              ? Icon(
-                  builtInIcon,
-                  color: Constants.LIGHT_BLUE_COLOR,
-                  size: 40,
-                )
-              : SizedBox(
-                  width: 40,
-                  height: 40,
-                  child: Image.asset(
-                    icon ?? "",
+          trailing: Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 8.0,
+            ),
+            child: builtInIcon != null
+                ? Icon(
+                    builtInIcon,
                     color: Constants.LIGHT_BLUE_COLOR,
+                    size: 40,
+                  )
+                : SizedBox(
+                    width: 40,
+                    height: 40,
+                    child: Image.asset(
+                      icon ?? "",
+                      color: Constants.LIGHT_BLUE_COLOR,
+                    ),
                   ),
-                ),
+          ),
         ),
       ),
     );

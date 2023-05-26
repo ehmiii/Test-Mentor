@@ -86,9 +86,9 @@ class Routes {
       name: testhistory,
     ),
     GetPage(
-      name: gattestsimulation,
-      page: () => GatTestSimulationPage(),
-    ),
+        name: gattestsimulation,
+        page: () => GatTestSimulationPage(),
+        binding: TestBinding()),
     GetPage(
       page: () => SubjectsSelectionPage(),
       name: subjectsselection,

@@ -124,20 +124,20 @@ class CustomDrawer {
               const SizedBox(
                 height: spaceBetweenListTile,
               ),
-              ListTile(
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => SubjectsPage(),
-                    ),
-                  );
-                },
-                leading: const Icon(Icons.home),
-                title: const Text('Home'),
-              ),
-              const SizedBox(
-                height: spaceBetweenListTile,
-              ),
+              // ListTile(
+              //   onTap: () {
+              //     Navigator.of(context).push(
+              //       MaterialPageRoute(
+              //         builder: (_) => SubjectsPage(),
+              //       ),
+              //     );
+              //   },
+              //   leading: const Icon(Icons.home),
+              //   title: const Text('Home'),
+              // ),
+              // const SizedBox(
+              //   height: spaceBetweenListTile,
+              // ),
               Get.find<HomeController>().getUserInfo == null
                   ? const SizedBox()
                   : ListTile(
@@ -154,34 +154,34 @@ class CustomDrawer {
               const SizedBox(
                 height: spaceBetweenListTile,
               ),
-              ListTile(
-                onTap: () {
-                  // Get.toNamed(Routes.getTestPage());
-                },
-                leading: const Icon(Icons.quiz),
-                title: const Text('Drill Test'),
-              ),
-              const SizedBox(
-                height: spaceBetweenListTile,
-              ),
-              ListTile(
-                onTap: () {},
-                leading: const Icon(Icons.menu_book_outlined),
-                title: const Text('Test Guidelines'),
-              ),
-              const SizedBox(
-                height: spaceBetweenListTile,
-              ),
-              ListTile(
-                onTap: () {
-                  Get.toNamed(Routes.getTestHistoryPage());
-                },
-                leading: const Icon(Icons.history),
-                title: const Text('Test History'),
-              ),
-              const SizedBox(
-                height: spaceBetweenListTile,
-              ),
+              // ListTile(
+              //   onTap: () {
+              //     // Get.toNamed(Routes.getTestPage());
+              //   },
+              //   leading: const Icon(Icons.quiz),
+              //   title: const Text('Drill Test'),
+              // ),
+              // const SizedBox(
+              //   height: spaceBetweenListTile,
+              // ),
+              // ListTile(
+              //   onTap: () {},
+              //   leading: const Icon(Icons.menu_book_outlined),
+              //   title: const Text('Test Guidelines'),
+              // ),
+              // const SizedBox(
+              //   height: spaceBetweenListTile,
+              // ),
+              // ListTile(
+              //   onTap: () {
+              //     Get.toNamed(Routes.getTestHistoryPage());
+              //   },
+              //   leading: const Icon(Icons.history),
+              //   title: const Text('Test History'),
+              // ),
+              // const SizedBox(
+              //   height: spaceBetweenListTile,
+              // ),
               // ListTile(
               //   onTap: () {},
               //   leading: const Icon(
@@ -192,16 +192,16 @@ class CustomDrawer {
               // const SizedBox(
               //   height: spaceBetweenListTile,
               // ),
-              ListTile(
-                onTap: () {},
-                leading: const Icon(
-                  Icons.info_outline_rounded,
-                ),
-                title: const Text('About Us'),
-              ),
-              const SizedBox(
-                height: spaceBetweenListTile,
-              ),
+              // ListTile(
+              //   onTap: () {},
+              //   leading: const Icon(
+              //     Icons.info_outline_rounded,
+              //   ),
+              //   title: const Text('About Us'),
+              // ),
+              // const SizedBox(
+              //   height: spaceBetweenListTile,
+              // ),
               const Spacer(),
               DefaultTextStyle(
                 style: TextStyle(

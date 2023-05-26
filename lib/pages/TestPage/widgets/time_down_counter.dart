@@ -8,7 +8,7 @@ class TimeDownCounter extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<TestController>(
       builder: (testController) => Text(
-        testController.getRemainingTime,
+        "Total Duration:  ${Constants.FORMATE_TIME(testController.getTotalTime)}",
         style: TextStyle(
           color: Constants.DARK_BLUE_COLOR,
           fontSize: 30,

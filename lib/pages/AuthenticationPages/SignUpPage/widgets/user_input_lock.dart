@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 
 import '../../../../controllers/signup_controller.dart';
+import '../../../../utils/Routes/routes.dart';
 import '../../../../utils/constants.dart';
 
 class UserInputLock extends StatelessWidget {
@@ -26,6 +27,7 @@ class UserInputLock extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Flexible(child: Container(), flex: 2),
                   Icon(
                     Icons.lock_outline_rounded,
                     size: 90,
@@ -41,6 +43,34 @@ class UserInputLock extends StatelessWidget {
                         color: Constants.LIGHT_BLUE_COLOR,
                       ),
                     ),
+                  ),
+                  Flexible(child: Container(), flex: 2),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Already have an account?",
+                        style: TextStyle(
+                          color: Constants.LIGHT_BLUE_COLOR,
+                        ),
+                      ),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                        ),
+                        child: Text(
+                          "SignIn",
+                          style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            color: Constants.LIGHT_BLUE_COLOR,
+                            fontSize: 16,
+                          ),
+                        ),
+                        onPressed: () {
+                          Get.offAndToNamed(Routes.getSignInPage());
+                        },
+                      )
+                    ],
                   ),
                 ],
               ),

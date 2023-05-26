@@ -40,9 +40,10 @@ class SignUpPage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    const HeaderButtonsSignInAndSignUp(
-                      isSignInPage: false,
-                    ),
+                    // const HeaderButtonsSignInAndSignUp(
+                    //   isSignInPage: false,
+                    // ),
+
                     const SizedBox(
                       height: 1,
                     ),

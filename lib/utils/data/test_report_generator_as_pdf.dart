@@ -16,6 +16,7 @@ class TestReportGeneratorAsPdf {
     required int wrongMcqs,
     required int rightMcqs,
     required int skippedMcqs,
+    required int examTakingTime,
   }) async {
     PdfBrush statusColor;
     double precentage = (obtainedMarks / mcqsLength) * 100;
@@ -35,8 +36,12 @@ class TestReportGeneratorAsPdf {
     }
     int minutes = time ~/ 60;
     int seconds = (time % 60);
+    int examTakingMinutes = examTakingTime ~/ 60;
+    int examTakingSeconds = examTakingTime % 60;
     String mcqsTime =
         "${minutes.toString().padLeft(2, "0")}Min ${seconds.toString().padLeft(2, "0")}Sec";
+    String examTakingTimeString =
+        "${examTakingMinutes.toString().padLeft(2, "0")}Min ${examTakingSeconds.toString().padLeft(2, "0")}Sec";
     String fileName =
         DateFormat("dd-MMM-yyyy hh:mm:ss a").format(DateTime.now());
     final data = await rootBundle.load("assets/images/ForLightBackground.png");
@@ -91,61 +96,66 @@ class TestReportGeneratorAsPdf {
       bounds: Rect.fromLTWH(0, 200, page.getClientSize().width, 50),
     );
     page.graphics.drawString(
-      "Test Time: $mcqsTime",
+      "Test Total Duration: $mcqsTime",
       PdfStandardFont(PdfFontFamily.timesRoman, 18),
       bounds: Rect.fromLTWH(0, 220, page.getClientSize().width, 50),
+    );
+    page.graphics.drawString(
+      "Test Duration: $examTakingTimeString",
+      PdfStandardFont(PdfFontFamily.timesRoman, 18),
+      bounds: Rect.fromLTWH(0, 250, page.getClientSize().width, 50),
     );
     page.graphics.drawString(
       "Result",
       PdfStandardFont(PdfFontFamily.timesRoman, 25),
       bounds:
-          Rect.fromLTWH((page.getClientSize().width / 2) - 35, 250, 200, 50),
+          Rect.fromLTWH((page.getClientSize().width / 2) - 35, 280, 200, 50),
     );
 
     page.graphics.drawString(
       "Total Marks",
       PdfStandardFont(PdfFontFamily.timesRoman, 18),
-      bounds: Rect.fromLTWH(page.size.width * .1, 280, 100, 50),
+      bounds: Rect.fromLTWH(page.size.width * .1, 310, 100, 50),
     );
     page.graphics.drawString(
       "Obtain Marks",
       PdfStandardFont(PdfFontFamily.timesRoman, 18),
-      bounds: Rect.fromLTWH(page.size.width * .35, 280, 100, 50),
+      bounds: Rect.fromLTWH(page.size.width * .35, 310, 100, 50),
     );
     page.graphics.drawString(
       "Precentage",
       PdfStandardFont(PdfFontFamily.timesRoman, 18),
-      bounds: Rect.fromLTWH(page.size.width * .6, 280, 100, 50),
+      bounds: Rect.fromLTWH(page.size.width * .6, 310, 100, 50),
     );
     page.graphics.drawString(
       "$mcqsLength",
       PdfStandardFont(PdfFontFamily.timesRoman, 18),
-      bounds: Rect.fromLTWH(page.size.width * .15, 300, 100, 50),
+      bounds: Rect.fromLTWH(page.size.width * .15, 330, 100, 50),
     );
     page.graphics.drawString(
       "$obtainedMarks",
       PdfStandardFont(PdfFontFamily.timesRoman, 18),
-      bounds: Rect.fromLTWH(page.size.width * .40, 300, 100, 50),
+      bounds: Rect.fromLTWH(page.size.width * .40, 330, 100, 50),
     );
     page.graphics.drawString(
       ((obtainedMarks / mcqsLength) * 100).toStringAsFixed(2),
       PdfStandardFont(PdfFontFamily.timesRoman, 18),
-      bounds: Rect.fromLTWH(page.size.width * .62, 300, 100, 50),
+      bounds: Rect.fromLTWH(page.size.width * .62, 330, 100, 50),
     );
 
     page.graphics.drawString(
       "Right: $rightMcqs",
       PdfStandardFont(PdfFontFamily.timesRoman, 18),
-      bounds: Rect.fromLTWH(page.size.width * .1, 325, 100, 50),
+      bounds: Rect.fromLTWH(page.size.width * .1, 355, 100, 50),
     );
     page.graphics.drawString(
         "Worng: $wrongMcqs", PdfStandardFont(PdfFontFamily.timesRoman, 18),
-        bounds: Rect.fromLTWH(page.size.width * .35, 325, 100, 50),
+        bounds: Rect.fromLTWH(page.size.width * .35, 355, 100, 50),
         brush: PdfBrushes.red);
     page.graphics.drawString(
       "Skipped: $skippedMcqs",
       PdfStandardFont(PdfFontFamily.timesRoman, 18),
-      bounds: Rect.fromLTWH(page.size.width * .6, 325, 100, 50),
+      bounds: Rect.fromLTWH(page.size.width * .6, 355, 100, 50),
     );
     page.graphics.drawString(
       "Develop By Ahmad Khan & Hamza Sher",

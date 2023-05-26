@@ -232,15 +232,22 @@ class UsersDetailsPage extends StatelessWidget {
                                                       const EdgeInsets.all(8.0),
                                                   child: GestureDetector(
                                                     onTap: () {
-                                                      Get.toNamed(
-                                                        Routes
-                                                            .getAdminMcqsDetailPage(),
-                                                      );
                                                       if (adminController
-                                                          .getAdminMcqs
-                                                          .isEmpty) {
-                                                        adminController
-                                                            .getAdminMcqsFromDataBase();
+                                                              .getusers[index]
+                                                              .userId ==
+                                                          adminController
+                                                              .getUserInformation
+                                                              .userId) {
+                                                        Get.toNamed(
+                                                          Routes
+                                                              .getAdminMcqsDetailPage(),
+                                                        );
+                                                        if (adminController
+                                                            .getAdminMcqs
+                                                            .isEmpty) {
+                                                          adminController
+                                                              .getAdminMcqsFromDataBase();
+                                                        }
                                                       }
                                                     },
                                                     child: Text(

@@ -40,7 +40,7 @@ class ResultAverageBanner extends StatelessWidget {
                           width: cons.maxWidth * .7,
                           height: cons.maxWidth * .08,
                           decoration: BoxDecoration(
-                            color: Constants.LIGHT_BLUE_COLOR,
+                            color: Colors.red,
                             borderRadius: BorderRadius.circular(50),
                           ),
                         ),

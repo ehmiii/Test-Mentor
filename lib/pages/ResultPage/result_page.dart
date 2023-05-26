@@ -1,5 +1,7 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../controllers/home_controller.dart';
 import '/controllers/signup_controller.dart';
 import '/controllers/test_controller.dart';
 import '/pages/ResultPage/widgets/review_test.dart';
@@ -41,7 +43,13 @@ class ResultPage extends StatelessWidget {
                 centerTitle: true,
               )
             : CustomAppBar.CUSTOM_APPBAR(
-                context: context, title: "Result", buttonText: "Close"),
+                context: context,
+                title: "Result",
+                buttonText: "Close",
+                buttonPressFunction: () {
+                  Get.until((route) => route.settings.name == Routes.home);
+                },
+              ),
         body: LayoutBuilder(
           builder: (context, constrains) {
             return Container(
@@ -71,15 +79,17 @@ class ResultPage extends StatelessWidget {
                                     6) {
                                   Get.find<SignUpController>().setIsQuizPassed =
                                       true;
-                                  Navigator.maybePop(context);
-                                  Navigator.maybePop(context);
-                                  Navigator.maybePop(context);
+                                  Get.until(
+                                    (route) =>
+                                        route.settings.name == Routes.signup,
+                                  );
                                   ShowToast.SHOW_TOAST(
                                       "Congrats! you passed the test");
                                 } else {
-                                  Navigator.maybePop(context);
-                                  Navigator.maybePop(context);
-                                  Navigator.maybePop(context);
+                                  Get.until(
+                                    (route) =>
+                                        route.settings.name == Routes.signup,
+                                  );
                                   ShowToast.SHOW_TOAST(
                                       "You are unable to get required marks");
                                 }
@@ -88,11 +98,15 @@ class ResultPage extends StatelessWidget {
                           ],
                         )
                       : Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment:
+                              Get.find<HomeController>().getUserChoice ==
+                                      "GATTest"
+                                  ? MainAxisAlignment.center
+                                  : MainAxisAlignment.spaceAround,
                           children: [
                             CustomButton(
                               constrains: constrains,
-                              icon: Constants.TEST_REVIEW_ICON,
+                              // icon: Constants.TEST_REVIEW_ICON,
                               buttonText: "Test Review",
                               press: () {
                                 showDialog(
@@ -110,24 +124,28 @@ class ResultPage extends StatelessWidget {
                                 );
                               },
                             ),
-                            CustomButton(
-                              constrains: constrains,
-                              icon: Constants.RETEST_ICON,
-                              buttonText: "Re Test",
-                              press: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      TestMcqsSelectionDialog
-                                          .TEST_MCQS_SELECTION_DIALOG(context,
-                                              isRetest: true),
-                                  barrierDismissible: false,
-                                  barrierLabel: "Select Length of Mcqs",
-                                  barrierColor:
-                                      Constants.DARK_BLUE_COLOR.withOpacity(.7),
-                                );
-                              },
-                            ),
+                            Get.find<HomeController>().getUserChoice ==
+                                    "GATTest"
+                                ? const SizedBox()
+                                : CustomButton(
+                                    constrains: constrains,
+                                    // icon: Constants.RETEST_ICON,
+                                    buttonText: "Re Test",
+                                    press: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            TestMcqsSelectionDialog
+                                                .TEST_MCQS_SELECTION_DIALOG(
+                                                    context,
+                                                    isRetest: true),
+                                        barrierDismissible: false,
+                                        barrierLabel: "Select Length of Mcqs",
+                                        barrierColor: Constants.DARK_BLUE_COLOR
+                                            .withOpacity(.7),
+                                      );
+                                    },
+                                  ),
                           ],
                         ),
                   Get.isRegistered<SignUpController>()
@@ -149,23 +167,24 @@ class ResultPage extends StatelessWidget {
                                     // if (!testController.getIsReportGenerated) {
                                     TestReportGeneratorAsPdf
                                         .TEST_REPORT_GENERATOR_AS_PDF(
-                                            subject: testController
-                                                .getSelectedMcqs[0].category,
-                                            mcqsLength: testController
-                                                .getSelectedMcqs.length
-                                                .toDouble(),
-                                            time: testController.getTotalTime,
-                                            obtainedMarks:
-                                                testController.getObtainedMarks,
-                                            wrongMcqs:
-                                                testController.getWrongAnswerByUser
-                                                    .toInt(),
-                                            rightMcqs: testController
-                                                .getObtainedMarks
-                                                .toInt(),
-                                            skippedMcqs: testController
-                                                .getSkippedMcqs
-                                                .toInt());
+                                      subject: testController
+                                          .getSelectedMcqs[0].category,
+                                      mcqsLength: testController
+                                          .getSelectedMcqs.length
+                                          .toDouble(),
+                                      time: testController.getTotalTime,
+                                      obtainedMarks:
+                                          testController.getObtainedMarks,
+                                      wrongMcqs: testController
+                                          .getWrongAnswerByUser
+                                          .toInt(),
+                                      rightMcqs: testController.getObtainedMarks
+                                          .toInt(),
+                                      skippedMcqs:
+                                          testController.getSkippedMcqs.toInt(),
+                                      examTakingTime:
+                                          testController.getExamTakingTime,
+                                    );
                                     testController.setIsReportGenerated = true;
                                   }
                                 },
@@ -173,13 +192,10 @@ class ResultPage extends StatelessWidget {
                             }),
                             CustomButton(
                               constrains: constrains,
-                              icon: Constants.CLOSE_ICON,
+                              // icon: Constants.CLOSE_ICON,
                               buttonText: "Exit",
-                              press: () => Navigator.of(context)
-                                ..maybePop()
-                                ..maybePop()
-                                ..maybePop()
-                                ..maybePop(),
+                              press: () => Get.until((route) =>
+                                  route.settings.name == Routes.home),
                             ),
                           ],
                         ),

@@ -44,105 +44,105 @@ class SubjectsSelectionPage extends StatelessWidget {
                         context: context,
                         title: homeController.getUserChoice,
                       ),
-                      body: RefreshIndicator(
-                        onRefresh: () => homeController
-                            .getAvaliableCategoriesAndNotifications(),
-                        child: ListView.builder(
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (_, index) => Card(
-                            color: Constants.DARK_BLUE_COLOR,
-                            child: ListTile(
-                              onTap: () async {
-                                homeController.setUserSelectedSubjectTitle =
-                                    snapshot.data![index];
-                                print(
-                                    homeController.getUserSelectedSubjectTitle);
-                                Get.toNamed(
-                                  Routes.getSubjectsPage(),
-                                );
-                                // if (snapshot.data![index] == "Computer Science") {
-                                //   List<CategoryModel> categories = [];
-                                //   for (var category
-                                //       in homeController.getAvailabelCategory) {
-                                //     if (CategoriesName.COMPUTER_SCIENCE
-                                //         .contains(category)) {
-                                //       categories.add(category);
-                                //     }
-                                //   }
-                                //   if (homeController.getUserChoice=="test") {
+                      body: snapshot.connectionState == ConnectionState.waiting
+                          ? const Center(
+                              child: CircularProgressIndicator.adaptive(),
+                            )
+                          : ListView.builder(
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (_, index) => Card(
+                                color: Constants.DARK_BLUE_COLOR,
+                                child: ListTile(
+                                  onTap: () async {
+                                    homeController.setUserSelectedSubjectTitle =
+                                        snapshot.data![index];
+                                    print(homeController
+                                        .getUserSelectedSubjectTitle);
+                                    Get.toNamed(
+                                      Routes.getSubjectsPage(),
+                                    );
+                                    // if (snapshot.data![index] == "Computer Science") {
+                                    //   List<CategoryModel> categories = [];
+                                    //   for (var category
+                                    //       in homeController.getAvailabelCategory) {
+                                    //     if (CategoriesName.COMPUTER_SCIENCE
+                                    //         .contains(category)) {
+                                    //       categories.add(category);
+                                    //     }
+                                    //   }
+                                    //   if (homeController.getUserChoice=="test") {
 
-                                //     Get.toNamed(
-                                //       Routes.getSubjectsPage(),
-                                //       arguments: [
-                                //         categories,
-                                //         "Computer Science",
-                                //         "test"
-                                //       ],
-                                //     );
-                                //   } else {
-                                //     Get.toNamed(
-                                //       Routes.getSubjectsPage(),
-                                //       arguments: [
-                                //         categories,
-                                //         "Computer Science",
-                                //         "preparation"
-                                //       ],
-                                //     );
-                                //   }
-                                // } else {
-                                //   List<CategoryModel> categories = [];
-                                //   for (var category
-                                //       in homeController.getAvailabelCategory) {
-                                //     if (!CategoriesName.COMPUTER_SCIENCE
-                                //         .contains(category)) {
-                                //       categories.add(category);
-                                //     }
-                                //   }
-                                //   if (Get.arguments != null) {
-                                //     Get.toNamed(
-                                //       Routes.getSubjectsPage(),
-                                //       arguments: [
-                                //         categories,
-                                //         "English",
-                                //         "test",
-                                //       ],
-                                //     );
-                                //   } else {
-                                //     Get.toNamed(
-                                //       Routes.getSubjectsPage(),
-                                //       arguments: [
-                                //         categories,
-                                //         "English",
-                                //         "prepartion",
-                                //       ],
-                                //     );
-                                //   }
-                                // }
-                              },
-                              title: Text(
-                                snapshot.data![index],
-                                style: TextStyle(
-                                  color: Constants.LIGHT_BLUE_COLOR,
-                                  fontSize: 20,
-                                ),
-                              ),
-                              trailing: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 8.0,
-                                ),
-                                child: SizedBox(
-                                  width: 40,
-                                  height: 40,
-                                  child: Image.asset(
-                                    Constants.PREPARATION_MODE_ICON,
-                                    color: Constants.LIGHT_BLUE_COLOR,
+                                    //     Get.toNamed(
+                                    //       Routes.getSubjectsPage(),
+                                    //       arguments: [
+                                    //         categories,
+                                    //         "Computer Science",
+                                    //         "test"
+                                    //       ],
+                                    //     );
+                                    //   } else {
+                                    //     Get.toNamed(
+                                    //       Routes.getSubjectsPage(),
+                                    //       arguments: [
+                                    //         categories,
+                                    //         "Computer Science",
+                                    //         "preparation"
+                                    //       ],
+                                    //     );
+                                    //   }
+                                    // } else {
+                                    //   List<CategoryModel> categories = [];
+                                    //   for (var category
+                                    //       in homeController.getAvailabelCategory) {
+                                    //     if (!CategoriesName.COMPUTER_SCIENCE
+                                    //         .contains(category)) {
+                                    //       categories.add(category);
+                                    //     }
+                                    //   }
+                                    //   if (Get.arguments != null) {
+                                    //     Get.toNamed(
+                                    //       Routes.getSubjectsPage(),
+                                    //       arguments: [
+                                    //         categories,
+                                    //         "English",
+                                    //         "test",
+                                    //       ],
+                                    //     );
+                                    //   } else {
+                                    //     Get.toNamed(
+                                    //       Routes.getSubjectsPage(),
+                                    //       arguments: [
+                                    //         categories,
+                                    //         "English",
+                                    //         "prepartion",
+                                    //       ],
+                                    //     );
+                                    //   }
+                                    // }
+                                  },
+                                  title: Text(
+                                    snapshot.data![index],
+                                    style: TextStyle(
+                                      color: Constants.LIGHT_BLUE_COLOR,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  trailing: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 8.0,
+                                    ),
+                                    child: SizedBox(
+                                      width: 40,
+                                      height: 40,
+                                      child: Image.asset(
+                                        Constants.PREPARATION_MODE_ICON,
+                                        color: Constants.LIGHT_BLUE_COLOR,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ),
-                      ),
                     );
             });
           });
