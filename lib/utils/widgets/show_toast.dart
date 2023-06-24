@@ -2,6 +2,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '/utils/constants.dart';
 
 class ShowToast {
+  // ignore: non_constant_identifier_names
   static SHOW_TOAST(String message) {
     Fluttertoast.cancel();
     Fluttertoast.showToast(

@@ -3,20 +3,27 @@ import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 import 'package:hive/hive.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+
 import '/utils/data/categories_names.dart';
 import '/utils/widgets/show_toast.dart';
-
 import '../models/category_model.dart';
 import '../models/mcqs_model.dart';
 import '../models/subjects_model.dart';
 import '../models/user_authentication_model.dart';
 import '../models/user_information_model.dart';
+import '../utils/localNotification/custom_local_notification.dart';
 
 class HomeController extends GetxController {
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
   final _userInfoBox = Hive.box("UserInfo");
   UserInformationModel? _userInfo;
   UserAuthenticationModel? _userData;
@@ -416,7 +423,22 @@ class HomeController extends GetxController {
   @override
   void onInit() async {
     // print(_recentViewed);
-
+    tz.initializeTimeZones();
+    tz.setLocalLocation(tz.getLocation("Asia/Karachi"));
+    flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()!
+        .requestPermission();
+    await CustomNotification.initialize(flutterLocalNotificationsPlugin);
+    flutterLocalNotificationsPlugin.cancelAll();
+    CustomNotification.scheduleNotification(
+      flutterLocalNotificationsPlugin: flutterLocalNotificationsPlugin,
+      scheduleTime: tz.TZDateTime.now(tz.local).add(
+        const Duration(
+          days: 1,
+        ),
+      ),
+    );
     if (_userInfoBox.isNotEmpty) {
       for (var key in _userInfoBox.keys) {
         final hiveData = _userInfoBox.get(key);

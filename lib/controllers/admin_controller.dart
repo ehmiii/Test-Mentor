@@ -457,7 +457,7 @@ class AdminController extends GetxController {
         }
       }
     }
-    _selectedSpecilization = _userInformationModel!.specialization;
+    _selectedSpecilization = _userInformationModel!.specialization[0];
     await reportNotifications();
     await getPendingMcqsFromDataBase();
     await getUsersDetials();

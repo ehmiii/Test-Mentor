@@ -26,7 +26,7 @@ class UserInformationModel {
   String email;
   String userId;
   String profileImageUrl;
-  String specialization;
+  List specialization;
   bool isQuizPassed;
   bool? isAdmin;
 

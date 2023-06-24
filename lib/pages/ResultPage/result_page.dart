@@ -74,9 +74,14 @@ class ResultPage extends StatelessWidget {
                             TextButton(
                               child: const Text("Go to Sing up"),
                               onPressed: () {
-                                if (Get.find<TestController>()
-                                        .getObtainedMarks >
-                                    6) {
+                                final result = (Get.find<TestController>()
+                                            .getObtainedMarks *
+                                        Get.find<TestController>()
+                                            .getSelectedMcqs
+                                            .length) /
+                                    100;
+
+                                if (result >= 80) {
                                   Get.find<SignUpController>().setIsQuizPassed =
                                       true;
                                   Get.until(
@@ -91,7 +96,7 @@ class ResultPage extends StatelessWidget {
                                         route.settings.name == Routes.signup,
                                   );
                                   ShowToast.SHOW_TOAST(
-                                      "You are unable to get required marks");
+                                      "Your score:$result. Unable to get required marks");
                                 }
                               },
                             ),

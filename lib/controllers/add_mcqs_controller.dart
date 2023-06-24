@@ -22,12 +22,13 @@ class AddMcqsController extends GetxController {
 
   final _isLoading = false.obs;
   McqsModel? _addmcqs;
-
+  final _selectedCategory = "".obs;
   List<String> _listHintText = [];
 
   List<TextEditingController> _addMcqsControllers = [];
 
   TextEditingController get getQuestionController => _questionController;
+  String get getSelectedCategory => _selectedCategory.value;
   TextEditingController get getWrongAnswer1Controller =>
       _wrongAnswer1Controller;
   TextEditingController get getWrongAnswer2Controller =>
@@ -44,6 +45,8 @@ class AddMcqsController extends GetxController {
   set setIsLoading(bool value) {
     _isLoading.value = value;
   }
+
+  set setSelectedCategory(String value) => _selectedCategory.value = value;
 
 // Getting all questions related user specialization.
   List<String> checkingQuestionDuplication() {
@@ -77,7 +80,7 @@ class AddMcqsController extends GetxController {
           wrongAnswer2: _wrongAnswer2Controller.text,
           wrongAnswer3: _wrongAnswer3Controller.text,
           rightAnswer: _rightAnswerController.text,
-          category: _userInformationModel.specialization,
+          category: _selectedCategory.value,
           userId: _userInformationModel.userId,
         );
         final response = await http.post(
@@ -118,6 +121,7 @@ class AddMcqsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    _selectedCategory.value = _userInformationModel.specialization[0];
     if (Get.arguments != null && Get.arguments[1]) {
       editMcqs();
     }

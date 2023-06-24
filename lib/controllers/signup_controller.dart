@@ -25,7 +25,7 @@ class SignUpController extends GetxController {
   List<McqsModel> _mcqs = [];
   List<McqsModel> get getMcqs => _mcqs;
 
-  final _selectedCategory = 'Choose a Subject'.obs;
+  final RxList _selectedCategories = [].obs;
   final _pickedImage = "".obs;
   final _errorMessage = "".obs;
 
@@ -45,7 +45,8 @@ class SignUpController extends GetxController {
   UserInformationModel? _userInformation;
 
   // getters
-  String get getSeletedCategory => _selectedCategory.value;
+  List get getSeletedCategories => _selectedCategories;
+
   String get getErrorMessage => _errorMessage.value;
   String get getPickedImage => _pickedImage.value;
   bool get getIsQuizPassed => _isQuizPassed.value;
@@ -61,8 +62,13 @@ class SignUpController extends GetxController {
   GlobalKey get getscaffoldKey => _scaffoldKey;
 
   //setters
-  set setSelectedCategory(String categoryName) {
-    _selectedCategory.value = categoryName;
+  set setSelectedCategories(String categoryName) {
+    if (_selectedCategories.contains(categoryName)) {
+      _selectedCategories.remove(categoryName);
+    } else {
+      _selectedCategories.add(categoryName);
+    }
+    // _selectedCategories.value = categoryName;
   }
 
   set setIsQuizPassed(bool value) {
@@ -109,14 +115,12 @@ class SignUpController extends GetxController {
         print(jsonResponse['error']['message']);
         throw Exception(jsonResponse['error']['message']);
       }
-
-      print(jsonResponse);
       _userId = jsonResponse["localId"];
       _userInformation = UserInformationModel(
         userName: _userNameController.text,
         email: _emailController.text,
         userId: jsonResponse["localId"],
-        specialization: _selectedCategory.value,
+        specialization: _selectedCategories.value,
         isQuizPassed: _isQuizPassed.value,
         profileImageUrl: await uploadUserProfilePic(),
       );
@@ -135,6 +139,9 @@ class SignUpController extends GetxController {
       } else {
         _errorMessage.value = error.toString();
       }
+      // if(_userId.isEmpty){
+
+      // }
       rethrow;
     } finally {
       setIsLoading = false;
@@ -171,28 +178,30 @@ class SignUpController extends GetxController {
     return await ref.getDownloadURL();
   }
 
-  Future<void> getMcqsFromDataBase(String category) async {
-    String url =
-        "https://testmentor-41a06-default-rtdb.firebaseio.com/approve/$category.json?";
+  Future<void> getMcqsFromDataBase() async {
     _mcqs = [];
     try {
-      setIsLoading = true;
-      final response = await http.get(Uri.parse(url));
-      if (json.decode(response.body) == null) {
-        throw Exception();
+      for (var category in _selectedCategories) {
+        String url =
+            "https://testmentor-41a06-default-rtdb.firebaseio.com/approve/$category.json?";
+        setIsLoading = true;
+        final response = await http.get(Uri.parse(url));
+        if (json.decode(response.body) == null) {
+          throw Exception();
+        }
+        final jsonResponse = json.decode(response.body) as Map<String, dynamic>;
+
+        jsonResponse.forEach(
+          (key, value) {
+            value.forEach((key, mcqs) {
+              _mcqsModel = McqsModel.fromJson(mcqs);
+              _mcqsModel.id = key;
+              _mcqs.add(_mcqsModel);
+            });
+          },
+        );
+        update();
       }
-      final jsonResponse = json.decode(response.body) as Map<String, dynamic>;
-      jsonResponse.forEach(
-        (key, value) {
-          value.forEach((key, mcqs) {
-            _mcqsModel = McqsModel.fromJson(mcqs);
-            _mcqsModel.id = key;
-            _mcqs.add(_mcqsModel);
-          });
-        },
-      );
-      print(_mcqs.length);
-      update();
     } catch (error) {
       rethrow;
     } finally {

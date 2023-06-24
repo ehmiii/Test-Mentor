@@ -95,6 +95,20 @@ class TestController extends GetxController {
     }
   }
 
+  void backQuestion() {
+    if (_currentMcqsIndex > 0) {
+      _currentMcqsIndex--;
+      _currentMcqsAnswers = [
+        _selectedmcqs[_currentMcqsIndex].wrongAnswer1,
+        _selectedmcqs[_currentMcqsIndex].wrongAnswer2,
+        _selectedmcqs[_currentMcqsIndex].wrongAnswer3,
+        _selectedmcqs[_currentMcqsIndex].rightAnswer,
+      ];
+      _currentMcqsAnswers.shuffle();
+      update();
+    }
+  }
+
   void testTimer() {
     if (_timer == null) {
       const duration = Duration(seconds: 1);
@@ -116,16 +130,104 @@ class TestController extends GetxController {
     }
   }
 
-  Future<void> getSelectedMcqsMethod({
-    required int lengthOfSelectedMcqs,
-    required List<McqsModel> mcqs,
-    bool isSingupTest = false,
-  }) async {
+  Future<void> getSelectedMcqsMethod(
+      {required int lengthOfSelectedMcqs,
+      required List<McqsModel> mcqs,
+      bool isSingupTest = false,
+      SignUpController? signUpController}) async {
+    List<dynamic> categoryNames = [];
+
+    if (signUpController != null) {
+      categoryNames = signUpController.getSeletedCategories;
+    }
+    List<McqsModel> categoryoneMcqs = [];
+    List<McqsModel> categoryTwoMcqs = [];
+    List<McqsModel> categoryThreeMcqs = [];
+    print(mcqs);
+    for (int index = 0; index < categoryNames.length; index++) {
+      if (index == 0) {
+        categoryoneMcqs = mcqs
+            .where((element) => element.category == categoryNames[index])
+            .toList();
+      } else if (index == 1) {
+        categoryTwoMcqs = mcqs
+            .where((element) => element.category == categoryNames[index])
+            .toList();
+      } else if (index == 2) {
+        categoryThreeMcqs = mcqs
+            .where((element) => element.category == categoryNames[index])
+            .toList();
+      }
+    }
+    print(categoryoneMcqs.length);
+    print(categoryTwoMcqs.length);
+    print(categoryThreeMcqs.length);
+    print(lengthOfSelectedMcqs);
+    print(mcqs.length);
     if (mcqs.length > lengthOfSelectedMcqs) {
-      while (_selectedmcqs.length < lengthOfSelectedMcqs) {
-        McqsModel pickedMcqs = mcqs.randomItem();
-        if (!_selectedmcqs.contains(pickedMcqs)) {
-          _selectedmcqs.add(pickedMcqs);
+      if (lengthOfSelectedMcqs == 10 || Get.isRegistered<HomeController>()) {
+        while (_selectedmcqs.length < lengthOfSelectedMcqs) {
+          McqsModel pickedMcqs = mcqs.randomItem();
+          if (!_selectedmcqs.contains(pickedMcqs)) {
+            _selectedmcqs.add(pickedMcqs);
+          }
+        }
+      } else if (lengthOfSelectedMcqs == 20) {
+        int index = 0;
+        categoryoneMcqs = mcqs
+            .where((element) => element.category == categoryNames[0])
+            .toList();
+        categoryTwoMcqs = mcqs
+            .where((element) => element.category == categoryNames[1])
+            .toList();
+        while (index < 10) {
+          McqsModel pickedMcqs = categoryoneMcqs.randomItem();
+          if (!_selectedmcqs.contains(pickedMcqs)) {
+            _selectedmcqs.add(pickedMcqs);
+          }
+          index++;
+        }
+        index = 0;
+        while (index < 10) {
+          McqsModel pickedMcqs = categoryTwoMcqs.randomItem();
+          if (!_selectedmcqs.contains(pickedMcqs)) {
+            _selectedmcqs.add(pickedMcqs);
+            index++;
+          }
+        }
+      } else if (lengthOfSelectedMcqs == 30) {
+        categoryoneMcqs = mcqs
+            .where((element) => element.category == categoryNames[0])
+            .toList();
+        categoryTwoMcqs = mcqs
+            .where((element) => element.category == categoryNames[1])
+            .toList();
+        categoryThreeMcqs = mcqs
+            .where((element) => element.category == categoryNames[2])
+            .toList();
+        int index = 0;
+        while (index < 10) {
+          McqsModel pickedMcqs = categoryoneMcqs.randomItem();
+          if (!_selectedmcqs.contains(pickedMcqs)) {
+            _selectedmcqs.add(pickedMcqs);
+            index++;
+          }
+        }
+        index = 0;
+        while (index < 10) {
+          McqsModel pickedMcqs = categoryTwoMcqs.randomItem();
+          if (!_selectedmcqs.contains(pickedMcqs)) {
+            _selectedmcqs.add(pickedMcqs);
+            index++;
+          }
+        }
+        index = 0;
+        while (index < 10) {
+          McqsModel pickedMcqs = categoryThreeMcqs.randomItem();
+          if (!_selectedmcqs.contains(pickedMcqs)) {
+            _selectedmcqs.add(pickedMcqs);
+            index++;
+          }
         }
       }
     } else {
@@ -142,11 +244,10 @@ class TestController extends GetxController {
     ];
     _currentMcqsAnswers.shuffle();
     if (isSingupTest) {
-      _totalTime = 300;
+      _totalTime = _selectedmcqs.length * 40;
     } else {
       _totalTime = _selectedmcqs.length * 50;
     }
-
     _remainingtime = Constants.FORMATE_TIME(_totalTime);
   }
 
@@ -299,11 +400,26 @@ class TestController extends GetxController {
         );
       }
     } else if (Get.isRegistered<SignUpController>()) {
-      getSelectedMcqsMethod(
-        lengthOfSelectedMcqs: 10,
-        mcqs: Get.find<SignUpController>().getMcqs,
-        isSingupTest: true,
-      );
+      if (Get.find<SignUpController>().getSeletedCategories.length == 1) {
+        getSelectedMcqsMethod(
+            lengthOfSelectedMcqs: 10,
+            mcqs: Get.find<SignUpController>().getMcqs,
+            isSingupTest: true,
+            signUpController: Get.find<SignUpController>());
+      } else if (Get.find<SignUpController>().getSeletedCategories.length ==
+          2) {
+        getSelectedMcqsMethod(
+            lengthOfSelectedMcqs: 20,
+            mcqs: Get.find<SignUpController>().getMcqs,
+            isSingupTest: true,
+            signUpController: Get.find<SignUpController>());
+      } else {
+        getSelectedMcqsMethod(
+            lengthOfSelectedMcqs: 30,
+            mcqs: Get.find<SignUpController>().getMcqs,
+            isSingupTest: true,
+            signUpController: Get.find<SignUpController>());
+      }
     }
     super.onInit();
   }

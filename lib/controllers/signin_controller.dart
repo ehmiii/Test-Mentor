@@ -125,18 +125,31 @@ class SignInController extends GetxController {
         "requestType": "PASSWORD_RESET",
         "email": _emailController.text
       });
-      final decodedRespon = jsonDecode(respons.body);
-      if (decodedRespon['error']['message'] == "EMAIL_NOT_FOUND") {
-        ShowToast.SHOW_TOAST(
-            "Given email not found. Please enter correct email");
-        return;
+      final decodedRespon = jsonDecode(respons.body) as Map<String, dynamic>;
+      print(decodedRespon);
+      if (decodedRespon.containsKey('error')) {
+        print('wewr');
+        if (decodedRespon['error']['message'] == "EMAIL_NOT_FOUND") {
+          // ShowToast.SHOW_TOAST(
+          //     "Given email not found. Please enter correct email");
+          throw Exception("Given email not found. Please enter correct email");
+        } else if (decodedRespon['error']['message'] ==
+            "RESET_PASSWORD_EXCEED_LIMIT") {
+          // ShowToast.SHOW_TOAST("");
+          throw Exception(
+            "Reset Password limit exceeded try later...",
+          );
+        }
       }
-      ShowToast.SHOW_TOAST("Reset Password link send to your ");
+      ShowToast.SHOW_TOAST(
+        "Reset Password link send to your",
+      );
       _emailController.text = "";
     } catch (e) {
-      print(e);
-      rethrow;
-    } finally {}
+      throw Exception(
+        "link was not send to your given email. Please try again",
+      );
+    }
   }
 
   @override

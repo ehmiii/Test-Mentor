@@ -211,8 +211,15 @@ class _SignInPageState extends State<SignInPage> {
                                                   ShowToast.SHOW_TOAST(
                                                       "Please enter correct email");
                                                 } else {
-                                                  await signInController
-                                                      .forgetPassword();
+                                                  try {
+                                                    await signInController
+                                                        .forgetPassword();
+                                                    Get.back();
+                                                  } on Exception catch (e) {
+                                                    ShowToast.SHOW_TOAST(
+                                                      e.toString(),
+                                                    );
+                                                  }
                                                 }
                                               },
                                               btnCancelOnPress: () {

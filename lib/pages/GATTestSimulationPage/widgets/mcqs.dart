@@ -132,7 +132,7 @@ class McqsWidget extends StatelessWidget {
                                             0) {
                                           ShowToast.SHOW_TOAST(
                                               "Please wait while we calculate your result.");
-                                          Future.delayed(Duration(seconds: 2));
+                                          Future.delayed(const Duration(seconds: 2));
                                           _testController.setIsTestStart =
                                               false;
                                           _testController.getTimer!.cancel();

@@ -8,7 +8,8 @@ import '../../../../utils/constants.dart';
 import '../../../../utils/widgets/category_selection_dialog.dart';
 
 class SelectCategoryButton extends StatelessWidget {
-  const SelectCategoryButton({super.key});
+  final String category;
+  const SelectCategoryButton({super.key, required this.category});
 
   @override
   Widget build(BuildContext context) {
@@ -39,15 +40,13 @@ class SelectCategoryButton extends StatelessWidget {
               horizontal: 30,
               vertical: 10,
             ),
-            child: Obx(
-              () => Text(
-                Get.find<SignUpController>().getSeletedCategory,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Constants.DARK_BLUE_COLOR,
-                ),
+            child: Text(
+              category,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 20,
+                color: Constants.DARK_BLUE_COLOR,
               ),
             ),
           ),

@@ -43,7 +43,16 @@ class SignUpBody extends StatelessWidget {
               )
             : Column(
                 children: [
-                  const SelectCategoryButton(),
+                  if (signUpController.getSeletedCategories.isEmpty)
+                    const SelectCategoryButton(
+                        category: "Please Selecte category"),
+                  ...signUpController.getSeletedCategories
+                      .map(
+                        (e) => SelectCategoryButton(
+                          category: e,
+                        ),
+                      )
+                      .toList(),
                   const SizedBox(
                     height: 10,
                   ),

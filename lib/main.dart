@@ -44,7 +44,8 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           // useMaterial3: true,
           primarySwatch: Constants.DARK_BLUE_COLOR_MATERIAL_COLOR,
-          fontFamily: GoogleFonts.roboto().fontFamily,
+          fontFamily: GoogleFonts.roboto().fontFamily, 
+          
         ),
         // initialRoute: Routes.getSignUpPage(),
         initialRoute: Routes.getSplashPage(),

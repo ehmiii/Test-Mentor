@@ -188,7 +188,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             contentPadding:
                                 EdgeInsets.all(constrains.maxWidth * .03),
                             hintText:
-                                homeController.getUserInfo!.specialization,
+                                homeController.getUserInfo!.specialization[0],
                             hintStyle: TextStyle(
                               color: Constants.LIGHT_BLUE_COLOR,
                               fontSize: 20,

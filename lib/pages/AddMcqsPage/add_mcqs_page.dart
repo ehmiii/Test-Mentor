@@ -198,13 +198,31 @@ class _AddMcqsPageState extends State<AddMcqsPage> {
                             ],
                           ),
                         ),
-                        child: Text(
-                          Get.find<HomeController>()
-                              .getUserInfo!
-                              .specialization,
-                          style: TextStyle(
-                            color: Constants.DARK_BLUE_COLOR,
-                            fontSize: 20,
+                        // child: Text(
+                        //   Get.find<HomeController>()
+                        //       .getUserInfo!
+                        //       .specialization[0],
+                        //   style: TextStyle(
+                        //     color: Constants.DARK_BLUE_COLOR,
+                        //     fontSize: 20,
+                        //   ),
+                        // ),
+                        child: Obx(
+                          () => DropdownButton(
+                            value: addMcqsController.getSelectedCategory,
+                            items: addMcqsController
+                                .getUserInformation.specialization
+                                .map(
+                                  (category) => DropdownMenuItem(
+                                    value: category,
+                                    child: Text(category),
+                                  ),
+                                )
+                                .toList(),
+                            onChanged: (category) {
+                              addMcqsController.setSelectedCategory =
+                                  category.toString();
+                            },
                           ),
                         ),
                       ),

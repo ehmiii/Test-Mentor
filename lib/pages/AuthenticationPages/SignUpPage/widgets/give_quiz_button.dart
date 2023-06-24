@@ -44,11 +44,11 @@ class GiveQuizButton extends StatelessWidget {
           onTap: () async {
             // Get.find<SignUpController>().setIsQuizPassed =
             //     Get.find<SignUpController>().getIsQuizPassed;
-            if (Get.find<SignUpController>().getSeletedCategory !=
-                "Choose a Subject") {
+            if (Get.find<SignUpController>().getSeletedCategories.isNotEmpty) {
               try {
-                await Get.find<SignUpController>().getMcqsFromDataBase(
-                    Get.find<SignUpController>().getSeletedCategory);
+                // Get.find<SignUpController>().setIsQuizPassed = true;
+                await Get.find<SignUpController>().getMcqsFromDataBase();
+                // print("hello");
                 Get.toNamed(Routes.getTestPage());
               } catch (errorMessage) {
                 ShowToast.SHOW_TOAST(

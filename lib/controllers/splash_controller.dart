@@ -22,13 +22,14 @@ class SplashController extends GetxController {
   }
 
   @override
-  void onInit() {
+  void onInit() async {
+    super.onInit();
+
     for (var key in _userInfoBox.keys) {
       // print(_userInfoBox.get(key)['isAdmin']);
       if (_userInfoBox.get(key)['isAdmin'] != null) {
         setIsAdmin = _userInfoBox.get(key)['isAdmin'];
       }
     }
-    super.onInit();
   }
 }

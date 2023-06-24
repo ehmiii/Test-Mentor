@@ -6,6 +6,7 @@ import '../data/categories_names.dart';
 import '/controllers/signup_controller.dart';
 
 import '../../../utils/constants.dart';
+import 'show_toast.dart';
 
 class CategorySelectionDialog {
   static Widget CATEGORY_BUTTON({
@@ -20,6 +21,7 @@ class CategorySelectionDialog {
         ),
       ),
     );
+
     return Container(
       width: double.infinity,
       height: 70,
@@ -62,9 +64,7 @@ class CategorySelectionDialog {
     );
   }
 
-  static Dialog CATEGORY_SELECTION_DIALOG(
-    BuildContext context,
-  ) {
+  static Dialog CATEGORY_SELECTION_DIALOG(BuildContext context) {
     final textButtonStyle = TextButton.styleFrom(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(
@@ -72,6 +72,7 @@ class CategorySelectionDialog {
         ),
       ),
     );
+    SignUpController signUpController = Get.find<SignUpController>();
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(25.0),
@@ -107,15 +108,25 @@ class CategorySelectionDialog {
                 mainAxisSize: MainAxisSize.min,
                 children: CategoriesName.CATEGORIES_NAME
                     .map(
-                      (categoryName) => CATEGORY_BUTTON(
-                        isSelected: categoryName ==
-                            Get.find<SignUpController>().getSeletedCategory,
-                        cateGoryName: categoryName.categoryName,
-                        press: () {
-                          Get.find<SignUpController>().setSelectedCategory =
-                              categoryName.categoryName;
-                          Navigator.maybePop(context);
-                        },
+                      (categoryName) => Obx(
+                        () => CATEGORY_BUTTON(
+                          isSelected: signUpController.getSeletedCategories
+                              .contains(categoryName.categoryName),
+                          cateGoryName: categoryName.categoryName,
+                          press: () {
+                            print(signUpController.getSeletedCategories.length);
+                            if (signUpController.getSeletedCategories.length <
+                                    3 ||
+                                signUpController.getSeletedCategories
+                                    .contains(categoryName.categoryName)) {
+                              signUpController.setSelectedCategories =
+                                  categoryName.categoryName;
+                            } else {
+                              ShowToast.SHOW_TOAST(
+                                  "Maximum 3 Subject selection are allowed");
+                            }
+                          },
+                        ),
                       ),
                     )
                     .toList(),
